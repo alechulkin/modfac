@@ -1,0 +1,684 @@
+
+Here are the Postman API testing scripts for the `SearchControllerIntegrationTest` class. The base URL is configured as `http://localhost:8080/modfac/api`:
+
+### Postman Collection Structure
+```json
+{
+  "info": {
+    "name": "SearchController Integration Tests",
+    "description": "Integration tests for employee search functionality",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/modfac/api",
+      "type": "string"
+    },
+    {
+      "key": "adminUsername",
+      "value": "adminSearch",
+      "type": "string"
+    },
+    {
+      "key": "adminPassword",
+      "value": "admin123",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "employeeId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup Admin User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/admin",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "admin"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{adminUsername}}\",\"password\":\"{{adminPassword}}\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Admin user created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.oneOf([200, 201]);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Admin Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{adminUsername}}\",\"password\":\"{{adminPassword}}\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Admin login successful\", function () {",
+              "    pm.expect(pm.response.code).to.equal(200);",
+              "    pm.environment.set(\"adminToken\", pm.response.json().token);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Test Employee (Alice)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"123 Fictional St\",\"city\":\"Imaginaria\",\"state\":\"CA\",\"zipCode\":\"00000\",\"phoneNumber\":\"+123456789\",\"email\":\"alice@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"MAG001\",\"salary\":75000,\"managerId\":null}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Employee created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.equal(201);",
+              "    const responseJson = pm.response.json();",
+              "    pm.environment.set(\"employeeId\", responseJson.id);",
+              "});",
+              "",
+              "// Delay to allow for indexing",
+              "setTimeout(function() {",
+              "    console.log('Indexing delay completed');",
+              "}, 12000);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - By First Name",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Alice\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Returns matching employee\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson[0].firstName).to.equal(\"Alice\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - Substring Match",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Ali\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Returns matching employee\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson[0].firstName).to.equal(\"Alice\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - Typo Tolerance",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Wunder\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Returns matching employee despite typo\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson[0].lastName).to.equal(\"Wonderland\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - By Last Name",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Wonderland\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Returns matching employee\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson[0].firstName).to.equal(\"Alice\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - Case Insensitive",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"WONDERLAND\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Returns matching employee case insensitive\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson[0].firstName).to.equal(\"Alice\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - Short Query (Bad Request)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Al\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - No Match",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Nobody\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Returns empty array\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson.length).to.equal(0);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup for Pagination Test",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "[{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 1\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000001\",\"email\":\"alice1@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV001\",\"salary\":50100,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 2\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000002\",\"email\":\"alice2@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV002\",\"salary\":50200,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 3\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000003\",\"email\":\"alice3@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV003\",\"salary\":50300,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 4\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000004\",\"email\":\"alice4@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV004\",\"salary\":50400,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 5\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000005\",\"email\":\"alice5@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV005\",\"salary\":50500,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 6\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000006\",\"email\":\"alice6@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV006\",\"salary\":50600,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 7\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000007\",\"email\":\"alice7@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV007\",\"salary\":50700,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 8\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000008\",\"email\":\"alice8@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV008\",\"salary\":50800,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 9\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000009\",\"email\":\"alice9@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV009\",\"salary\":50900,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 10\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000010\",\"email\":\"alice10@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV010\",\"salary\":51000,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 11\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000011\",\"email\":\"alice11@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV011\",\"salary\":51100,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 12\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000012\",\"email\":\"alice12@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV012\",\"salary\":51200,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 13\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000013\",\"email\":\"alice13@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV013\",\"salary\":51300,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 14\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000014\",\"email\":\"alice14@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV014\",\"salary\":51400,\"managerId\":null},{\"firstName\":\"Alice\",\"lastName\":\"Wonderland\",\"street\":\"Street 15\",\"city\":\"City\",\"state\":\"CA\",\"zipCode\":\"12345\",\"phoneNumber\":\"+100000015\",\"email\":\"alice15@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV015\",\"salary\":51500,\"managerId\":null}]"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Employees created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.equal(201);",
+              "});",
+              "",
+              "// Delay to allow for indexing",
+              "setTimeout(function() {",
+              "    console.log('Indexing delay completed');",
+              "}, 7000);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search - Pagination Test",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/search/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "search", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Alice\",\"page\":0,\"size\":5}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Returns 5 employees on first page\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson.length).to.equal(5);",
+              "});",
+              "",
+              "// Test pagination for other pages",
+              "const pages = [1, 2, 3];",
+              "pages.forEach(page => {",
+              "    pm.sendRequest({",
+              "        url: pm.request.url.toString(),",
+              "        method: 'POST',",
+              "        header: pm.request.headers.toObject(),",
+              "        body: {",
+              "            mode: 'raw',",
+              "            raw: JSON.stringify({",
+              "                \"name\": \"Alice\",",
+              "                \"page\": page,",
+              "                \"size\": 5",
+              "            })",
+              "        }",
+              "    }, (err, res) => {",
+              "        if (err) {",
+              "            console.error(err);",
+              "            return;",
+              "        }",
+              "        const expectedSize = page < 3 ? 5 : 0;",
+              "        pm.test(`Page ${page} has ${expectedSize} employees`, function () {",
+              "            pm.expect(res.json().length).to.equal(expectedSize);",
+              "        });",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Environment Variables Configuration
+Create an environment with the following variables:
+
+| Variable | Value | Type | Initial Value | Description |
+|----------|-------|------|---------------|-------------|
+| baseUrl | http://localhost:8080/modfac/api | string | | Base API URL |
+| adminUsername | adminSearch | string | | Admin username |
+| adminPassword | admin123 | string | | Admin password |
+| adminToken | | string | | Admin JWT token |
+| employeeId | | string | | Employee ID |
+| today | | string | | Current date in ISO format |
+
+### Pre-request Script for Date Variables
+Add this script to the environment's "Pre-request Script" tab:
+```javascript
+// Set today's date in ISO format
+pm.environment.set("today", new Date().toISOString().split('T')[0]);
+```
+
+### Key Features of the Postman Collection:
+
+1. **Complete Setup Sequence**:
+   - Creates admin user
+   - Retrieves admin token
+   - Creates test employee (Alice) with full details
+   - Creates 15 additional employees for pagination testing
+
+2. **Indexing Delays**:
+   - Implements 12-second delay after creating initial employee
+   - Implements 7-second delay after creating pagination employees
+   - Uses JavaScript setTimeout to simulate Thread.sleep()
+
+3. **Comprehensive Test Coverage**:
+   - **Basic Search Tests**:
+     - First name search
+     - Substring search
+     - Typo tolerance
+     - Last name search
+     - Case-insensitive search
+   - **Edge Case Tests**:
+     - Short query (returns 400)
+     - No match (returns empty array)
+   - **Pagination Test**:
+     - Tests multiple pages with 5 items per page
+     - Verifies correct number of items per page
+     - Tests empty last page
+
+4. **Dynamic Data Handling**:
+   - Uses environment variables for IDs and tokens
+   - Automatically calculates current date
+   - Handles employee creation with varying data
+
+5. **Advanced Pagination Testing**:
+   - Uses nested requests to test multiple pages
+   - Validates expected results for each page
+   - Handles empty last page scenario
+
+### How to Use in Postman:
+
+1. **Create Environment**:
+   - Create a new environment named "Search Testing"
+   - Add all variables listed above
+   - Add the pre-request script for date handling
+
+2. **Import Collection**:
+   - Import the JSON collection
+   - Verify it's linked to the "Search Testing" environment
+
+3. **Execute Tests in Order**:
+   - Run the setup requests first:
+     1. Setup Admin User
+     2. Get Admin Token
+     3. Create Test Employee (Alice)
+     4. Wait for indexing (12 seconds)
+   - Then run the basic search tests:
+     5. Search - By First Name
+     6. Search - Substring Match
+     7. Search - Typo Tolerance
+     8. Search - By Last Name
+     9. Search - Case Insensitive
+     10. Search - Short Query (Bad Request)
+     11. Search - No Match
+   - Finally, run pagination tests:
+     12. Setup for Pagination Test
+     13. Wait for indexing (7 seconds)
+     14. Search - Pagination Test
+
+4. **Verify Results**:
+   - Check test results in the "Test Results" tab
+   - Confirm environment variables are set correctly
+   - Validate status codes and response content
+
+### Notes:
+
+1. **Indexing Delays**:
+   - The collection implements delays to simulate Elasticsearch indexing
+   - These delays are critical for search functionality to work properly
+
+2. **Pagination Implementation**:
+   - Uses nested requests to test multiple pages in a single test
+   - Automatically tests pages 0, 1, 2, and 3
+   - Verifies correct number of items per page
+
+3. **Data Consistency**:
+   - All test employees use consistent naming pattern
+   - Dates are calculated dynamically
+   - Employee IDs are stored for reference
+
+4. **Security Testing**:
+   - All requests include proper authentication
+   - Uses stored admin token for authorization
+
+5. **Limitations**:
+   - Cannot directly replicate database deletion from original test
+   - Pagination test creates additional employees without cleanup
+   - The collection assumes the application is running on localhost:8080
+
+This collection provides comprehensive integration testing for the SearchController endpoints, covering all scenarios from the original test class while adapting for real API testing in Postman.
