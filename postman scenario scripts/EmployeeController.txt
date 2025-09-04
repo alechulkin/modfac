@@ -1,0 +1,453 @@
+
+Here are the Postman API testing scripts for the `EmployeeControllerIntegrationTest` class. The base URL is configured as `http://localhost:8080/modfac/api`:
+
+### Postman Collection Structure
+```json
+{
+  "info": {
+    "name": "EmployeeController Integration Tests",
+    "description": "Integration tests for employee management endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/modfac/api",
+      "type": "string"
+    },
+    {
+      "key": "adminUsername",
+      "value": "admin1",
+      "type": "string"
+    },
+    {
+      "key": "userUsername",
+      "value": "user1",
+      "type": "string"
+    },
+    {
+      "key": "validEmployeeDto",
+      "value": "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"street\":\"123 Main St\",\"city\":\"New York\",\"state\":\"NY\",\"zipCode\":\"10001\",\"phoneNumber\":\"+1234567890\",\"email\":\"john.doe@example.com\",\"hireDate\":\"2023-01-01\",\"jobId\":\"DEV001\",\"salary\":80000,\"managerId\":\"507f1f77bcf86cd799439011\"}",
+      "type": "string"
+    },
+    {
+      "key": "invalidEmployeeDto",
+      "value": "{\"lastName\":\"Doe\"}",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup Admin User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/admin",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "admin"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{adminUsername}}\",\"password\":\"admin123\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Admin user created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.oneOf([200, 201]);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup Regular User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "register"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{userUsername}}\",\"password\":\"user123\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Regular user created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.oneOf([200, 201]);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Admin Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{adminUsername}}\",\"password\":\"admin123\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Admin login successful\", function () {",
+              "    pm.expect(pm.response.code).to.equal(200);",
+              "    pm.environment.set(\"adminToken\", pm.response.json().token);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get User Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{userUsername}}\",\"password\":\"user123\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"User login successful\", function () {",
+              "    pm.expect(pm.response.code).to.equal(200);",
+              "    pm.environment.set(\"userToken\", pm.response.json().token);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Onboard Employee - Success Case",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{validEmployeeDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response has employee details\", function () {",
+              "    const responseJson = pm.response.json();",
+              "    pm.expect(responseJson.id).to.not.be.empty;",
+              "    pm.expect(responseJson.firstName).to.equal(\"John\");",
+              "    pm.expect(responseJson.lastName).to.equal(\"Doe\");",
+              "    pm.expect(responseJson.phoneNumber).to.equal(\"+1234567890\");",
+              "    pm.expect(responseJson.jobInfo.email).to.equal(\"john.doe@example.com\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Onboard Employee - Security Failure (User Role)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{validEmployeeDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 403\", function () {",
+              "    pm.response.to.have.status(403);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Onboard Employee - Security Failure (Invalid Token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer invalidToken"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{validEmployeeDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 401\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Onboard Employee - Security Failure (No Token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{validEmployeeDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 401\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Onboard Employee - Validation Failure",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{invalidEmployeeDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Key Features of the Postman Collection:
+
+1. **Setup Sequence**:
+   - Creates admin and regular users
+   - Retrieves authentication tokens for both users
+   - Uses environment variables to store tokens
+
+2. **Variable Configuration**:
+   - `baseUrl`: Base API endpoint
+   - `adminUsername`/`userUsername`: Test user credentials
+   - `validEmployeeDto`: Valid employee data
+   - `invalidEmployeeDto`: Invalid employee data (missing required fields)
+
+3. **Test Coverage**:
+   - **Success Case**: Onboard employee with admin role (201 Created)
+   - **Security Failures**:
+     - User role attempting to onboard (403 Forbidden)
+     - Invalid token (401 Unauthorized)
+     - Missing token (401 Unauthorized)
+   - **Validation Failure**: Invalid employee data (400 Bad Request)
+
+4. **Authentication Handling**:
+   - Uses stored tokens from environment variables
+   - Tests both valid and invalid authentication scenarios
+   - Handles token absence scenarios
+
+5. **Response Validation**:
+   - HTTP status code verification
+   - Employee data validation in success response
+   - Error code verification for failure scenarios
+
+### How to Use in Postman:
+
+1. **Import the Collection**:
+   - Copy the JSON and import into Postman
+   - Verify environment variables are set correctly
+
+2. **Run the Setup Sequence**:
+   - Execute "Setup Admin User"
+   - Execute "Setup Regular User"
+   - Execute "Get Admin Token"
+   - Execute "Get User Token"
+
+3. **Run Employee Tests**:
+   - Execute each test case individually or as a folder
+   - Verify test results in the "Test Results" tab
+
+4. **Environment Management**:
+   - Use the "Development" environment
+   - Update `baseUrl` if deployment changes
+   - Modify credentials if needed
+
+### Notes:
+
+1. **Initial Setup**:
+   - The admin user creation may return 200 or 201 depending on implementation
+   - Tokens are stored in environment variables for subsequent requests
+
+2. **Data Consistency**:
+   - Fixed hire date (2023-01-01) for consistent testing
+   - Example ObjectId for managerId
+   - Consistent test credentials across requests
+
+3. **Security Testing**:
+   - Tests different authentication failure scenarios
+   - Validates role-based access control
+   - Handles token validation failures
+
+4. **Validation Testing**:
+   - Tests DTO validation with minimal data
+   - Verifies appropriate error response for invalid data
+
+5. **Database Cleanup**:
+   - Unlike the unit test, Postman tests don't automatically clean up the database
+   - Consider adding cleanup requests if needed for repeated test runs
+
+This collection provides comprehensive integration testing for the EmployeeController endpoints, covering all scenarios from the original test class while adapting for real API testing in Postman.

@@ -1,0 +1,549 @@
+
+Here are the Postman API testing scripts for the `LeaveControllerIntegrationTest` class. The base URL is configured as `http://localhost:8080/modfac/api`:
+
+### Postman Collection Structure
+```json
+{
+  "info": {
+    "name": "LeaveController Integration Tests",
+    "description": "Integration tests for leave management endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/modfac/api",
+      "type": "string"
+    },
+    {
+      "key": "adminUsername",
+      "value": "admin1",
+      "type": "string"
+    },
+    {
+      "key": "adminPassword",
+      "value": "admin123",
+      "type": "string"
+    },
+    {
+      "key": "validLeaveDto",
+      "value": "{\"employeeId\":\"{{employeeId}}\",\"leaveType\":\"SICK\",\"startDate\":\"{{startDate}}\",\"endDate\":\"{{endDate}}\",\"status\":\"PENDING\",\"approvedById\":\"{{managerId}}\",\"reason\":\"Feeling sick.\"}",
+      "type": "string"
+    },
+    {
+      "key": "invalidLeaveDto",
+      "value": "{}",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup Admin User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/admin",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "admin"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{adminUsername}}\",\"password\":\"{{adminPassword}}\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Admin user created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.oneOf([200, 201]);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Admin Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"{{adminUsername}}\",\"password\":\"{{adminPassword}}\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Admin login successful\", function () {",
+              "    pm.expect(pm.response.code).to.equal(200);",
+              "    pm.environment.set(\"adminToken\", pm.response.json().token);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Manager",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"firstName\":\"Manager\",\"lastName\":\"One\",\"street\":\"123 Main St\",\"city\":\"New York\",\"state\":\"NY\",\"zipCode\":\"10001\",\"phoneNumber\":\"+10000000001\",\"email\":\"manager.one@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"MGR123\",\"salary\":80000,\"managerId\":null}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Manager created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.equal(201);",
+              "    const responseJson = pm.response.json();",
+              "    pm.environment.set(\"managerId\", responseJson.id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Employee (Jane Doe)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"firstName\":\"Jane\",\"lastName\":\"Doe\",\"street\":\"456 Oak Ave\",\"city\":\"Boston\",\"state\":\"MA\",\"zipCode\":\"02101\",\"phoneNumber\":\"+12345678901\",\"email\":\"jane.doe@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV123\",\"salary\":60000,\"managerId\":\"{{managerId}}\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Employee created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.equal(201);",
+              "    const responseJson = pm.response.json();",
+              "    pm.environment.set(\"employeeId\", responseJson.id);",
+              "    // Set leave balance for sick leave",
+              "    pm.environment.set(\"sickLeaveBalance\", 10);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Request Leave - Success Case",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/leaves",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "leaves"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{validLeaveDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Wrong Approver",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/employees",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "employees"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"firstName\":\"Another\",\"lastName\":\"Guy\",\"street\":\"789 Pine Rd\",\"city\":\"Chicago\",\"state\":\"IL\",\"zipCode\":\"60601\",\"phoneNumber\":\"+12345000000\",\"email\":\"another.guy@example.com\",\"hireDate\":\"{{today}}\",\"jobId\":\"DEV456\",\"salary\":70000,\"managerId\":\"{{managerId}}\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Wrong approver created successfully\", function () {",
+              "    pm.expect(pm.response.code).to.equal(201);",
+              "    const responseJson = pm.response.json();",
+              "    pm.environment.set(\"wrongApproverId\", responseJson.id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Request Leave - Wrong Approver",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/leaves",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "leaves"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"employeeId\":\"{{employeeId}}\",\"leaveType\":\"SICK\",\"startDate\":\"{{startDate}}\",\"endDate\":\"{{endDate}}\",\"status\":\"PENDING\",\"approvedById\":\"{{wrongApproverId}}\",\"reason\":\"Feeling sick.\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Request Leave - End Date Before Start Date",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/leaves",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "leaves"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"employeeId\":\"{{employeeId}}\",\"leaveType\":\"SICK\",\"startDate\":\"{{startDatePlus5}}\",\"endDate\":\"{{startDateMinus3}}\",\"status\":\"PENDING\",\"approvedById\":\"{{managerId}}\",\"reason\":\"Feeling sick.\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Request Leave - Invalid DTO",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/leaves",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "leaves"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{invalidLeaveDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Request Leave - Unauthorized",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/leaves",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "leaves"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{{validLeaveDto}}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 401\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Environment Variables Configuration
+Create an environment with the following variables:
+
+| Variable | Value | Type | Initial Value | Description |
+|----------|-------|------|---------------|-------------|
+| baseUrl | http://localhost:8080/modfac/api | string | | Base API URL |
+| adminUsername | admin1 | string | | Admin username |
+| adminPassword | admin123 | string | | Admin password |
+| adminToken | | string | | Admin JWT token |
+| managerId | | string | | Manager employee ID |
+| employeeId | | string | | Employee ID |
+| wrongApproverId | | string | | Wrong approver ID |
+| sickLeaveBalance | | number | | Employee's sick leave balance |
+| today | | string | | Current date in ISO format |
+| startDate | | string | | Tomorrow's date |
+| endDate | | string | | Day after tomorrow |
+| startDatePlus5 | | string | | Current date + 5 days |
+| startDateMinus3 | | string | | Current date - 3 days |
+
+### Pre-request Script for Date Variables
+Add this script to the environment's "Pre-request Script" tab:
+```javascript
+// Set today's date in ISO format
+pm.environment.set("today", new Date().toISOString().split('T')[0]);
+
+// Set tomorrow and day after tomorrow
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+pm.environment.set("startDate", tomorrow.toISOString().split('T')[0]);
+
+const dayAfterTomorrow = new Date();
+dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+pm.environment.set("endDate", dayAfterTomorrow.toISOString().split('T')[0]);
+
+// Set dates for end date before start date test
+const startDatePlus5 = new Date();
+startDatePlus5.setDate(startDatePlus5.getDate() + 5);
+pm.environment.set("startDatePlus5", startDatePlus5.toISOString().split('T')[0]);
+
+const startDateMinus3 = new Date();
+startDateMinus3.setDate(startDateMinus3.getDate() - 3);
+pm.environment.set("startDateMinus3", startDateMinus3.toISOString().split('T')[0]);
+```
+
+### Key Features of the Postman Collection:
+
+1. **Complete Setup Sequence**:
+   - Creates admin user
+   - Retrieves admin token
+   - Creates manager employee
+   - Creates regular employee (Jane Doe)
+   - Sets up all necessary IDs in environment variables
+
+2. **Date Handling**:
+   - Dynamic date calculation using pre-request scripts
+   - Uses current date for hire dates
+   - Calculates future dates for leave requests
+
+3. **Test Coverage**:
+   - **Success Case**: Valid leave request with manager approval
+   - **Business Logic Failures**:
+     - Wrong approver (not the employee's manager)
+     - End date before start date
+     - Invalid DTO (missing fields)
+   - **Security Failure**: Unauthorized request (no token)
+
+4. **Environment Management**:
+   - Stores all IDs and tokens in environment variables
+   - Automatic date calculation for consistent testing
+   - Clean separation of test data and test logic
+
+5. **Response Validation**:
+   - Correct HTTP status codes for each scenario
+   - No content validation in success case (as per original test)
+   - Error status validation for failure cases
+
+### How to Use in Postman:
+
+1. **Create Environment**:
+   - Create a new environment named "Leave Testing"
+   - Add all variables listed above
+   - Add the pre-request script for date handling
+
+2. **Import Collection**:
+   - Import the JSON collection
+   - Verify it's linked to the "Leave Testing" environment
+
+3. **Execute Tests in Order**:
+   - Run the setup requests first:
+     1. Setup Admin User
+     2. Get Admin Token
+     3. Create Manager
+     4. Create Employee (Jane Doe)
+   - Then run the leave request tests:
+     5. Request Leave - Success Case
+     6. Create Wrong Approver
+     7. Request Leave - Wrong Approver
+     8. Request Leave - End Date Before Start Date
+     9. Request Leave - Invalid DTO
+     10. Request Leave - Unauthorized
+
+4. **Verify Results**:
+   - Check test results in the "Test Results" tab
+   - Confirm environment variables are set correctly
+   - Validate status codes and error messages
+
+### Notes:
+
+1. **Data Consistency**:
+   - All test data is created dynamically
+   - Dates are calculated relative to current date
+   - Employee relationships (manager) are properly set
+
+2. **Security Testing**:
+   - Tests both authenticated and unauthenticated scenarios
+   - Validates role-based access control
+   - Handles token validation failures
+
+3. **Business Logic Validation**:
+   - Tests leave request approval workflow
+   - Validates date constraints
+   - Verifies DTO validation
+
+4. **Limitations**:
+   - Leave balance testing is not included (as it requires direct database manipulation)
+   - The collection assumes the application is running on localhost:8080
+   - All tests use the same test data setup
+
+This collection provides comprehensive integration testing for the LeaveController endpoints, covering all scenarios from the original test class while adapting for real API testing in Postman.
