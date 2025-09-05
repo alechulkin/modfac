@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -28,15 +31,32 @@ public class JwtTokenProvider {
     public String createToken(String username, String role) {
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
-        Claims claims = Jwts.claims().subject(username).build();
-//        claims.put("role", role);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", username); // subject claim
+        claims.put("role", role);    // custom role claim
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtExpiration);
 
-        return Jwts.builder().claims(claims).issuedAt(now).expiration(validity)
+        return Jwts.builder()
+                .claims(claims)
+                .issuedAt(now)
+                .expiration(validity)
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
+
+//        Claims claims = Jwts.claims().subject(username).build();
+////        claims.put("role", role);
+//        claims.put("authorities", List.of("ROLE_" + role.toUpperCase()));
+//
+//
+//        Date now = new Date();
+//        Date validity = new Date(now.getTime() + jwtExpiration);
+//
+//        return Jwts.builder().claims(claims).issuedAt(now).expiration(validity)
+//                .signWith(key, Jwts.SIG.HS256)
+//                .compact();
     }
 
     /**

@@ -2,22 +2,15 @@ package com.example.modfac.controller;
 
 import com.example.modfac.dto.CaptureLeaveDTO;
 import com.example.modfac.model.*;
-import com.example.modfac.repository.EmployeeRepository;
-import com.example.modfac.repository.LeaveRepository;
-import com.example.modfac.repository.UserRepository;
-import com.example.modfac.security.JwtTokenProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.EnumMap;
@@ -27,29 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(properties = "spring.config.name=application-test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class LeaveControllerIntegrationTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private LeaveRepository leaveRepository;
-
+class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
     private final String API_URL = "/api/leaves";
-    private final String ADMIN_USERNAME = "admin1";
 
     private CaptureLeaveDTO leaveDTO;
     private Employee employee;
@@ -97,9 +69,7 @@ class LeaveControllerIntegrationTest {
 
     @AfterEach
     void cleanUp() {
-        leaveRepository.deleteAll();
-        employeeRepository.deleteAll();
-        userRepository.deleteAll();
+        super.cleanUp();
     }
 
     // --- SUCCESS CASE ---
@@ -210,16 +180,6 @@ class LeaveControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(leaveDTO)))
                 .andExpect(status().isUnauthorized());
-    }
-
-    // --- Utility Method ---
-
-    private void createAdminUser() {
-        User admin = new User();
-        admin.setUsername(ADMIN_USERNAME);
-        admin.setPassword("notHashed");
-        admin.setRole(Role.ADMIN);
-        userRepository.save(admin);
     }
 }
 

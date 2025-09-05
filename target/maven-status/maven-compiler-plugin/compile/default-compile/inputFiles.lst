@@ -1,7 +1,7 @@
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\config\MongoDBDataConfig.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\config\MongoDBIndexConfig.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\config\SecurityConfig.java
-C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\config\ValidationConfig.java
+C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\controller\AuthController.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\controller\EmployeeController.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\controller\LeaveController.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\controller\SearchController.java
@@ -29,7 +29,6 @@ C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfa
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\response\ErrorResponse.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\response\JwtResponse.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\response\MessageResponse.java
-C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\security\AuthController.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\security\AuthenticationService.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\security\CustomUserDetails.java
 C:\Users\oleksandr.chulkin\Documents\repo\modfac\src\main\java\com\example\modfac\security\CustomUserDetailsService.java

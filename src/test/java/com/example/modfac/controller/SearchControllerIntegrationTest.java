@@ -3,18 +3,11 @@ package com.example.modfac.controller;
 import com.example.modfac.model.Employee;
 import com.example.modfac.model.LeaveType;
 import com.example.modfac.model.Role;
-import com.example.modfac.model.User;
-import com.example.modfac.repository.EmployeeRepository;
-import com.example.modfac.repository.UserRepository;
-import com.example.modfac.security.JwtTokenProvider;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.EnumMap;
@@ -25,22 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = "spring.config.name=application-test")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SearchControllerIntegrationTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
+class SearchControllerIntegrationTest extends IntegrationTestSuperclass {
     private final String SEARCH_API = "/api/search/employees";
-    private final String ADMIN_USERNAME = "adminSearch";
 
     @BeforeAll
     void setUp() throws Exception {
@@ -84,14 +63,13 @@ class SearchControllerIntegrationTest {
 
     @AfterAll
     void cleanUp() {
-        employeeRepository.deleteAll();
-        userRepository.deleteAll();
+        super.cleanUp();
     }
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withValidQuery_shouldReturnMatchingEmployeesForFirstName() throws Exception {
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
 
         String requestBody = """
         {
@@ -108,9 +86,9 @@ class SearchControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withSubstringMatch_shouldReturnResults() throws Exception {
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
 
         String requestBody = """
         {
@@ -129,9 +107,9 @@ class SearchControllerIntegrationTest {
 
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withTypoInLastName_shouldReturnResults() throws Exception {
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
 
         String requestBody = """
         {
@@ -149,9 +127,9 @@ class SearchControllerIntegrationTest {
 
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withValidQuery_shouldReturnMatchingEmployeesForLastName() throws Exception {
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
         String requestBody = """
         {
           "name": "Wonderland"
@@ -167,9 +145,9 @@ class SearchControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withValidQuery_shouldReturnMatchingEmployeesCaseInsensitive() throws Exception {
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
         String requestBody = """
         {
           "name": "WONDERLAND"
@@ -185,9 +163,9 @@ class SearchControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withPagination_shouldReturnPaginatedResults() throws Exception {
-        employeeRepository.deleteAll();
+        cleanUp();
         for (int i = 1; i <= 15; i++) {
             Employee emp = new Employee();
             emp.setId(new ObjectId());
@@ -223,7 +201,7 @@ class SearchControllerIntegrationTest {
         }
 
         Thread.sleep(7000);
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
 
         for (int page = 0; page < 4; page++) {
             int expectedSize = page < 3 ? 5 : 0;
@@ -247,9 +225,9 @@ class SearchControllerIntegrationTest {
 
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withShortQuery_shouldReturnBadRequest() throws Exception {
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
 
         String requestBody = """
         {
@@ -266,9 +244,9 @@ class SearchControllerIntegrationTest {
 
 
     @Test
-    @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
+//    @WithMockUser(username = ADMIN_USERNAME, authorities = {Role.ADMIN.name()})
     void searchEmployees_withNoMatch_shouldReturnEmptyList() throws Exception {
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
+        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
 
         String requestBody = """
         {
@@ -282,15 +260,6 @@ class SearchControllerIntegrationTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
-    }
-
-
-    private User createAdminUser() {
-        User user = new User();
-        user.setUsername(ADMIN_USERNAME);
-        user.setPassword("dummy");
-        user.setRole(Role.ADMIN);
-        return user;
     }
 }
 

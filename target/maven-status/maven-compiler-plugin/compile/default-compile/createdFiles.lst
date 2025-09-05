@@ -19,13 +19,11 @@ com\example\modfac\exception\UnauthorizedException.class
 com\example\modfac\controller\LeaveController.class
 com\example\modfac\service\UserService.class
 com\example\modfac\util\LeaveUtils.class
-com\example\modfac\config\ValidationConfig.class
 com\example\modfac\dto\OnboardEmployeeDTO.class
 com\example\modfac\security\CustomUserDetails.class
 com\example\modfac\security\JwtAuthenticationFilter.class
 com\example\modfac\util\EmployeeUtils.class
 com\example\modfac\security\CustomUserDetailsService.class
-com\example\modfac\security\AuthController.class
 com\example\modfac\service\MainService.class
 com\example\modfac\dto\RegisterUserDTO.class
 com\example\modfac\ModfacApplication.class
@@ -37,6 +35,7 @@ com\example\modfac\model\Status.class
 com\example\modfac\response\JwtResponse$Builder.class
 com\example\modfac\model\Role.class
 com\example\modfac\config\SecurityConfig.class
+com\example\modfac\controller\AuthController.class
 com\example\modfac\dto\LoginDTO.class
 com\example\modfac\repository\EmployeeRepository.class
 com\example\modfac\security\JwtTokenProvider.class

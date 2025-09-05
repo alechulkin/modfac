@@ -25,7 +25,6 @@ public class EmployeeController {
     private final MainService mainService;
 
     @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Employee> onboardEmployee(
             @Valid @RequestBody OnboardEmployeeDTO dto,
             @AuthenticationPrincipal UserDetails userDetails) {

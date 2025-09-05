@@ -18,7 +18,7 @@ public class LeaveDatesValidator implements ConstraintValidator<ValidLeaveDates,
         }
         if (dto.getEndDate().isBefore(dto.getStartDate())) {
             context.disableDefaultConstraintViolation();
-            ConstraintValidatorContext endDate = context
+            context
                     .buildConstraintViolationWithTemplate("End date cannot be before start date")
                     .addPropertyNode("endDate")
                     .addConstraintViolation();
