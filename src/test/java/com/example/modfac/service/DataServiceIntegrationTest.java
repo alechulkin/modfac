@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -25,10 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(properties = "spring.config.name=application-test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class MainServiceIntegrationTest {
+class DataServiceIntegrationTest {
 
     @Autowired
-    private MainService mainService;
+    private DataService dataService;
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
@@ -101,7 +100,7 @@ class MainServiceIntegrationTest {
     @Test
     void onboard_ShouldCreateEmployeeWhenAdminUser() {
         // Act
-        Employee result = mainService.onboard(onboardDto);
+        Employee result = dataService.onboard(onboardDto);
 
         // Assert
         assertNotNull(result.getId());
@@ -123,13 +122,13 @@ class MainServiceIntegrationTest {
         onboardDto.setCreatedBy(regularUser.getUsername());
 
         // Act & Assert
-        assertThrows(UnauthorizedException.class, () -> mainService.onboard(onboardDto));
+        assertThrows(UnauthorizedException.class, () -> dataService.onboard(onboardDto));
     }
 
     @Test
     void capture_ShouldCreateLeaveAndUpdateBalance() {
         // Act
-        Leave result = mainService.capture(captureLeaveDto);
+        Leave result = dataService.capture(captureLeaveDto);
 
         // Assert
         assertNotNull(result.getId());
@@ -154,7 +153,7 @@ class MainServiceIntegrationTest {
         captureLeaveDto.setApprovedById(otherManager.getId().toString());
 
         // Act & Assert
-        assertThrows(LeaveNotApprovedByManagerException.class, () -> mainService.capture(captureLeaveDto));
+        assertThrows(LeaveNotApprovedByManagerException.class, () -> dataService.capture(captureLeaveDto));
     }
 
     @Test
@@ -164,7 +163,7 @@ class MainServiceIntegrationTest {
         employeeRepository.save(employee);
 
         // Act & Assert
-        assertThrows(InsufficientLeaveBalanceException.class, () -> mainService.capture(captureLeaveDto));
+        assertThrows(InsufficientLeaveBalanceException.class, () -> dataService.capture(captureLeaveDto));
 
         // Verify no leave was created
         List<Leave> leaves = leaveRepository.findAll();

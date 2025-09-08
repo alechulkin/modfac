@@ -2,15 +2,11 @@ package com.example.modfac.controller;
 
 import com.example.modfac.dto.OnboardEmployeeDTO;
 import com.example.modfac.model.Employee;
-import com.example.modfac.repository.EmployeeRepository;
-import com.example.modfac.service.EmployeeService;
-import com.example.modfac.service.MainService;
+import com.example.modfac.service.DataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +18,7 @@ import jakarta.validation.Valid;
 @Slf4j
 @RequiredArgsConstructor
 public class EmployeeController {
-    private final MainService mainService;
+    private final DataService dataService;
 
     @PostMapping
     public ResponseEntity<Employee> onboardEmployee(
@@ -33,7 +29,7 @@ public class EmployeeController {
         log.info("Received request to onboard employee: {} {}",
                 dto.getFirstName(), dto.getLastName());
 
-        Employee employee = mainService.onboard(dto);
+        Employee employee = dataService.onboard(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(employee);
     }
 }

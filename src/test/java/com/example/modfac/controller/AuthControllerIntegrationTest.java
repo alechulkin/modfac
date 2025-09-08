@@ -181,12 +181,10 @@ class AuthControllerIntegrationTest extends IntegrationTestSuperclass {
     @Test
     void authenticateUser_ShouldReturnJwtToken_WhenLoginSuccessful() throws Exception {
         createSimpleUser();
-        String token = jwtTokenProvider.createToken(USER_USERNAME, USER_ROLE);
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loginDTO))
-                        .header("Authorization", "Bearer " + token))
+                        .content(objectMapper.writeValueAsString(loginDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").isNotEmpty())
                 .andExpect(jsonPath("$.username").value(loginDTO.getUsername()))
@@ -196,12 +194,10 @@ class AuthControllerIntegrationTest extends IntegrationTestSuperclass {
     @Test
     void authenticateUser_ShouldReturnUnauthorized_WhenLoginFails() throws Exception {
         createSimpleUser();
-        String token = jwtTokenProvider.createToken(USER_USERNAME, USER_ROLE);
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(brokenLoginDTO))
-                        .header("Authorization", "Bearer " + token))
+                        .content(objectMapper.writeValueAsString(brokenLoginDTO)))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Invalid username or password"));
     }

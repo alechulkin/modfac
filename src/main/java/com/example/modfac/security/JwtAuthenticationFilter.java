@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
+    private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(
@@ -64,6 +66,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String contextPath = request.getContextPath();
+        String path = request.getRequestURI().substring(contextPath.length());
+//        String path = request.getRequestURI();
+
+        return !(PATH_MATCHER.match("/api/employees/**", path) ||
+                PATH_MATCHER.match("/auth/register/**", path));
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

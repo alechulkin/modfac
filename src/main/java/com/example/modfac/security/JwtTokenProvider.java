@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,6 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -25,11 +23,13 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration:86400000}")
     private long jwtExpiration;
 
+    private SecretKey secretKey;
+
     /**
      * Create JWT token
      */
     public String createToken(String username, String role) {
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = getSecretKey();
 
 
         Map<String, Object> claims = new HashMap<>();
@@ -64,7 +64,7 @@ public class JwtTokenProvider {
      */
     public boolean validateToken(String token) {
         try {
-            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+            SecretKey key = getSecretKey();
 
             Jws<Claims> claims = Jwts.parser()
                     .verifyWith(key)
@@ -81,7 +81,7 @@ public class JwtTokenProvider {
      * Get username from JWT token
      */
     public String getUsername(String token) {
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = getSecretKey();
 
         return Jwts.parser()
                 .verifyWith(key)
@@ -95,7 +95,7 @@ public class JwtTokenProvider {
      * Get user role from JWT token
      */
     public String getRole(String token) {
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = getSecretKey();
 
         return Jwts.parser()
                 .verifyWith(key)
@@ -103,5 +103,12 @@ public class JwtTokenProvider {
                 .parseSignedClaims(token)
                 .getPayload()
                 .get("role", String.class);
+    }
+
+    private SecretKey getSecretKey() {
+        if (secretKey == null) {
+            secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_16));
+        }
+        return secretKey;
     }
 }
