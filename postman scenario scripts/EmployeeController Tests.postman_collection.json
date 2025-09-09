@@ -1,0 +1,377 @@
+{
+	"info": {
+		"_postman_id": "d33bd736-b196-4440-ad91-69813bfab4b5",
+		"name": "EmployeeController Integration Tests",
+		"description": "Integration tests for employee management endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48205789"
+	},
+	"item": [
+		{
+			"name": "Get Admin Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();",
+							"pm.collectionVariables.set('adminToken', json.token);",
+							"console.log('Admin token set:', json.token);",
+							"pm.test(\"Admin login successful\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.environment.set(\"adminToken\", pm.response.json().token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"{{adminUsername}}\",\"password\":\"admin123\"}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();",
+							"pm.collectionVariables.set('userToken', json.token);",
+							"console.log('User token set:', json.token);",
+							"pm.test(\"User login successful\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.environment.set(\"userToken\", pm.response.json().token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"{{userUsername}}\",\"password\":\"user123\"}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Onboard Employee - Success Case",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response has employee details\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.id).to.not.be.empty;",
+							"    pm.expect(responseJson.firstName).to.equal(\"John\");",
+							"    pm.expect(responseJson.lastName).to.equal(\"Doe\");",
+							"    pm.expect(responseJson.phoneNumber).to.equal(\"+1234567890\");",
+							"    pm.expect(responseJson.jobInfo.email).to.equal(\"john.doe@example.com\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{validEmployeeDto}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/employees",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Onboard Employee - Security Failure (User Role)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{validEmployeeDto}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/employees",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Onboard Employee - Security Failure (Invalid Token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer invalidToken"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{validEmployeeDto}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/employees",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Onboard Employee - Security Failure (No Token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{validEmployeeDto}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/employees",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Onboard Employee - Validation Failure",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{invalidEmployeeDto}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/employees",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/modfac"
+		},
+		{
+			"key": "adminUsername",
+			"value": "admin1"
+		},
+		{
+			"key": "userUsername",
+			"value": "user1"
+		},
+		{
+			"key": "validEmployeeDto",
+			"value": "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"street\":\"123 Main St\",\"city\":\"New York\",\"state\":\"NY\",\"zipCode\":\"10001\",\"phoneNumber\":\"+1234567890\",\"email\":\"john.doe@example.com\",\"hireDate\":\"2023-01-01\",\"jobId\":\"DEV001\",\"salary\":80000,\"managerId\":\"507f1f77bcf86cd799439011\"}"
+		},
+		{
+			"key": "invalidEmployeeDto",
+			"value": "{\"lastName\":\"Doe\"}"
+		},
+		{
+			"key": "adminToken",
+			"value": ""
+		},
+		{
+			"key": "userToken",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9aa1147b-e03b-4585-9597-c79279eda3ce",
+		"_postman_id": "34fc2578-d106-4824-bcbd-b7cae63c30b8",
 		"name": "AuthController Tests Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "48205789"
@@ -184,7 +184,46 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"username\": \"newAdmin18\", \"password\": \"securePassword\" }"
+					"raw": "{ \"username\": \"newAdmin17\", \"password\": \"securePassword\" }"
+				},
+				"url": {
+					"raw": "{{adminRegisterUrl}}",
+					"host": [
+						"{{adminRegisterUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Admin - Bad Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('400 BAD_REQUEST', () => pm.response.to.have.status(400));",
+							"pm.test('Correct message', () => pm.expect(pm.response.json().message).to.eql('Request validation failed'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"newAdmin17\" }"
 				},
 				"url": {
 					"raw": "{{adminRegisterUrl}}",
@@ -278,7 +317,7 @@
 			"response": []
 		},
 		{
-			"name": "Register Admin - Failure",
+			"name": "Register Admin - Failure (Conflict)",
 			"event": [
 				{
 					"listen": "test",
@@ -349,12 +388,51 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"username\": \"newUser18\", \"password\": \"securePassword\" }"
+					"raw": "{ \"username\": \"newUser17\", \"password\": \"securePassword\" }"
 				},
 				"url": {
 					"raw": "{{userRegisterUrl}}",
 					"host": [
 						"{{userRegisterUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User- Bad Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('400 BAD_REQUEST', () => pm.response.to.have.status(400));",
+							"pm.test('Correct message', () => pm.expect(pm.response.json().message).to.eql('Request validation failed'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"newAdmin17\" }"
+				},
+				"url": {
+					"raw": "{{adminRegisterUrl}}",
+					"host": [
+						"{{adminRegisterUrl}}"
 					]
 				}
 			},

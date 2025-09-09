@@ -118,15 +118,6 @@ class EmployeeControllerIntegrationTest extends IntegrationTestSuperclass {
                 .andExpect(status().isUnauthorized()); // Expect HTTP 401 Unauthorized
     }
 
-    @Test
-    void onboardEmployee_whenUnauthenticated_shouldReturnUnauthorized() throws Exception {
-        // When & Then
-        mockMvc.perform(post(API_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validDto)))
-                .andExpect(status().isUnauthorized()); // Expect HTTP 401 Unauthorized
-    }
-
     // --- Validation Failure Case ---
 
     @Test
