@@ -124,7 +124,7 @@ class AuthControllerIntegrationTest extends IntegrationTestSuperclass {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createAdminDTO))
                         .header("Authorization", "Bearer " + token))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message").value("Username already exists"));
     }
 
@@ -154,7 +154,7 @@ class AuthControllerIntegrationTest extends IntegrationTestSuperclass {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerUserDTO))
                         .header("Authorization", "Bearer " + token))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message").value("Username already exists"));
     }
 

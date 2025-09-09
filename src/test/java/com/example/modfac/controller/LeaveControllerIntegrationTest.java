@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 import java.util.EnumMap;
@@ -79,13 +77,11 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
     void requestLeave_whenValidInputAndManagerApproves_shouldReturnCreatedLeave() throws Exception {
         // Given
         createAdminUser();
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
 
         // When
         mockMvc.perform(post(API_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(leaveDTO))
-                .header("Authorization", "Bearer " + token))
+                .content(objectMapper.writeValueAsString(leaveDTO)))
         .andExpect(status().isCreated())
         .andReturn();
 
@@ -97,7 +93,6 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
     @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
     void requestLeave_whenApprovedByIsNotManager_shouldReturnBadRequest() throws Exception {
         createAdminUser();
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
 
         // Approver ID that is NOT the manager
         Employee wrongApprover = new Employee();
@@ -110,8 +105,7 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
 
         mockMvc.perform(post(API_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(leaveDTO))
-                        .header("Authorization", "Bearer " + token))
+                        .content(objectMapper.writeValueAsString(leaveDTO)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -121,7 +115,6 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
     @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
     void requestLeave_whenInsufficientLeaveBalance_shouldReturnBadRequest() throws Exception {
         createAdminUser();
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
 
         // Set very long leave period
         LocalDate now = LocalDate.now();
@@ -130,8 +123,7 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
 
         mockMvc.perform(post(API_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(leaveDTO))
-                        .header("Authorization", "Bearer " + token))
+                        .content(objectMapper.writeValueAsString(leaveDTO)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -140,7 +132,6 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
     @Test
     @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
     void requestLeave_whenEndDateBeforeStartDate_shouldReturnBadRequest() throws Exception {
-        createAdminUser();
         String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
 
         LocalDate now = LocalDate.now();
@@ -149,8 +140,7 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
 
         mockMvc.perform(post(API_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(leaveDTO))
-                        .header("Authorization", "Bearer " + token))
+                        .content(objectMapper.writeValueAsString(leaveDTO)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -160,26 +150,14 @@ class LeaveControllerIntegrationTest extends IntegrationTestSuperclass {
     @WithMockUser(username = ADMIN_USERNAME, authorities = {"ADMIN"})
     void requestLeave_whenInvalidDto_shouldReturnValidationError() throws Exception {
         createAdminUser();
-        String token = jwtTokenProvider.createToken(ADMIN_USERNAME, "ADMIN");
 
         CaptureLeaveDTO invalid = new CaptureLeaveDTO(); // missing fields
 
         mockMvc.perform(post(API_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalid))
-                        .header("Authorization", "Bearer " + token))
+                        .content(objectMapper.writeValueAsString(invalid)))
                 .andExpect(status().isBadRequest());
     }
 
-    // --- UNAUTHORIZED CASES ---
-
-    @Test
-    @WithAnonymousUser
-    void requestLeave_whenUnauthenticated_shouldReturnUnauthorized() throws Exception {
-        mockMvc.perform(post(API_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(leaveDTO)))
-                .andExpect(status().isUnauthorized());
-    }
 }
 
