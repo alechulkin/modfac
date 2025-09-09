@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Admin Login",
+			"name": "Admin Login Success",
 			"event": [
 				{
 					"listen": "test",
@@ -15,7 +15,11 @@
 						"exec": [
 							"let json = pm.response.json();",
 							"pm.collectionVariables.set('adminToken', json.token);",
-							"console.log('Admin token set:', json.token);"
+							"console.log('Admin token set:', json.token);",
+							"pm.test('200 OK', () => pm.response.to.have.status(200));",
+							"pm.test('JWT token present', () => pm.expect(pm.response.json().token).to.not.be.empty);",
+							"pm.test('Correct username', () => pm.expect(pm.response.json().username).to.eql('admin1'));",
+							"pm.test('Correct role', () => pm.expect(pm.response.json().role).to.eql('ADMIN'));"
 						],
 						"type": "text/javascript"
 					}
@@ -34,20 +38,16 @@
 					"raw": "{ \"username\": \"admin1\", \"password\": \"adminpass1\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/login",
+					"raw": "{{loginUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"login"
+						"{{loginUrl}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "User Login",
+			"name": "User Login Success",
 			"event": [
 				{
 					"listen": "test",
@@ -55,7 +55,11 @@
 						"exec": [
 							"let json = pm.response.json();",
 							"pm.collectionVariables.set('userToken', json.token);",
-							"console.log('User token set:', json.token);"
+							"console.log('User token set:', json.token);",
+							"pm.test('200 OK', () => pm.response.to.have.status(200));",
+							"pm.test('JWT token present', () => pm.expect(pm.response.json().token).to.not.be.empty);",
+							"pm.test('Correct username', () => pm.expect(pm.response.json().username).to.eql('user1'));",
+							"pm.test('Correct role', () => pm.expect(pm.response.json().role).to.eql('USER'));"
 						],
 						"type": "text/javascript"
 					}
@@ -74,13 +78,79 @@
 					"raw": "{ \"username\": \"user1\", \"password\": \"password1\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/login",
+					"raw": "{{loginUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"login"
+						"{{loginUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Login - Failure",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('401 Unauthorized', () => pm.response.to.have.status(401));",
+							"pm.test('Correct error message', () => pm.expect(pm.response.json().message).to.eql('Invalid username or password'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\":\"admin1\",\"password\":\"wrongPassword\" }"
+				},
+				"url": {
+					"raw": "{{loginUrl}}",
+					"host": [
+						"{{loginUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login - Failure",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('401 Unauthorized', () => pm.response.to.have.status(401));",
+							"pm.test('Correct error message', () => pm.expect(pm.response.json().message).to.eql('Invalid username or password'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\":\"user1\",\"password\":\"wrongPassword\" }"
+				},
+				"url": {
+					"raw": "{{loginUrl}}",
+					"host": [
+						"{{loginUrl}}"
 					]
 				}
 			},
@@ -114,17 +184,12 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"username\": \"newAdmin13\", \"password\": \"securePassword\" }"
+					"raw": "{ \"username\": \"newAdmin18\", \"password\": \"securePassword\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/admin",
+					"raw": "{{adminRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"register",
-						"admin"
+						"{{adminRegisterUrl}}"
 					]
 				}
 			},
@@ -170,14 +235,9 @@
 					"raw": "{ \"username\": \"failAdmin\", \"password\": \"securePassword\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/admin",
+					"raw": "{{adminRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"register",
-						"admin"
+						"{{adminRegisterUrl}}"
 					]
 				}
 			},
@@ -209,14 +269,9 @@
 					"raw": "{ \"username\": \"noTokenAdmin\", \"password\": \"securePassword\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/admin",
+					"raw": "{{adminRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"register",
-						"admin"
+						"{{adminRegisterUrl}}"
 					]
 				}
 			},
@@ -258,13 +313,9 @@
 					"raw": "{\"username\":\"admin1\",\"password\":\"securePassword\"}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/admin",
+					"raw": "{{adminRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"admin"
+						"{{adminRegisterUrl}}"
 					]
 				}
 			},
@@ -298,17 +349,12 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"username\": \"newUser12\", \"password\": \"securePassword\" }"
+					"raw": "{ \"username\": \"newUser18\", \"password\": \"securePassword\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/user",
+					"raw": "{{userRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"register",
-						"user"
+						"{{userRegisterUrl}}"
 					]
 				}
 			},
@@ -354,14 +400,9 @@
 					"raw": "{ \"username\": \"failUser\", \"password\":\"securePassword\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/user",
+					"raw": "{{userRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"register",
-						"user"
+						"{{userRegisterUrl}}"
 					]
 				}
 			},
@@ -393,14 +434,9 @@
 					"raw": "{ \"username\": \"failUser\", \"password\": \"securePassword\" }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/user",
+					"raw": "{{userRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"register",
-						"user"
+						"{{userRegisterUrl}}"
 					]
 				}
 			},
@@ -442,93 +478,9 @@
 					"raw": "{\"username\":\"user1\",\"password\":\"securePassword\"}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/auth/register/user",
+					"raw": "{{userRegisterUrl}}",
 					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login - Success",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('200 OK', () => pm.response.to.have.status(200));",
-							"pm.test('JWT token present', () => pm.expect(pm.response.json().token).to.not.be.empty);",
-							"pm.test('Correct username', () => pm.expect(pm.response.json().username).to.eql('user1'));",
-							"pm.test('Correct role', () => pm.expect(pm.response.json().role).to.eql('USER'));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{ \"username\":\"user1\",\"password\":\"password1\" }"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/auth/login",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login - Failure",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('401 Unauthorized', () => pm.response.to.have.status(401));",
-							"pm.test('Correct error message', () => pm.expect(pm.response.json().message).to.eql('Invalid username or password'));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{ \"username\":\"user1\",\"password\":\"wrongPassword\" }"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/auth/login",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"auth",
-						"login"
+						"{{userRegisterUrl}}"
 					]
 				}
 			},
@@ -561,6 +513,18 @@
 		{
 			"key": "baseUrl",
 			"value": "http://localhost:8080/modfac"
+		},
+		{
+			"key": "adminRegisterUrl",
+			"value": "http://localhost:8080/modfac/auth/register/admin"
+		},
+		{
+			"key": "userRegisterUrl",
+			"value": "http://localhost:8080/modfac/auth/register/user"
+		},
+		{
+			"key": "loginUrl",
+			"value": "http://localhost:8080/modfac/auth/login"
 		},
 		{
 			"key": "loginBody",
