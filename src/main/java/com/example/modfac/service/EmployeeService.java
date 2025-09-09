@@ -74,8 +74,6 @@ public class EmployeeService {
             address = fillAddress(address, dto);
             existingEmployee.setAddress(address);
 
-            existingEmployee = resetLeaveInfo(existingEmployee);
-            
             return employeeRepository.save(existingEmployee);
         } else {
             log.info("Creating new employee record");

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d33bd736-b196-4440-ad91-69813bfab4b5",
+		"_postman_id": "47c45826-aaeb-4524-8714-7ede88951de2",
 		"name": "EmployeeController Integration Tests",
 		"description": "Integration tests for employee management endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -14,12 +14,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"let json = pm.response.json();",
-							"pm.collectionVariables.set('adminToken', json.token);",
-							"console.log('Admin token set:', json.token);",
 							"pm.test(\"Admin login successful\", function () {",
 							"    pm.expect(pm.response.code).to.equal(200);",
-							"    pm.environment.set(\"adminToken\", pm.response.json().token);",
+							"    pm.collectionVariables.set(\"adminToken\", pm.response.json().token);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -58,12 +55,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"let json = pm.response.json();",
-							"pm.collectionVariables.set('userToken', json.token);",
-							"console.log('User token set:', json.token);",
 							"pm.test(\"User login successful\", function () {",
 							"    pm.expect(pm.response.code).to.equal(200);",
-							"    pm.environment.set(\"userToken\", pm.response.json().token);",
+							"    pm.collectionVariables.set(\"userToken\", pm.response.json().token);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -346,7 +340,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://localhost:8080/modfac"
+			"value": "http://localhost:8080/modfac/api"
 		},
 		{
 			"key": "adminUsername",
@@ -370,8 +364,7 @@
 		},
 		{
 			"key": "userToken",
-			"value": "",
-			"type": "default"
+			"value": ""
 		}
 	]
 }
