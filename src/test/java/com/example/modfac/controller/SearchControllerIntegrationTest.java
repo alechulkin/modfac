@@ -200,7 +200,7 @@ class SearchControllerIntegrationTest extends IntegrationTestSuperclass {
             employeeRepository.save(emp);
         }
 
-        Thread.sleep(10_000);
+        Thread.sleep(20_000);
         String token = jwtTokenProvider.createToken(ADMIN_USERNAME, Role.ADMIN.name());
 
         for (int page = 0; page < 4; page++) {
