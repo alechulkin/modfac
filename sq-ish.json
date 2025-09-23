@@ -8,7 +8,11 @@
     "main_line": 31,
     "affected_lines": [31],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
@@ -19,7 +23,11 @@
     "main_line": 32,
     "affected_lines": [32],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
@@ -30,7 +38,11 @@
     "main_line": 33,
     "affected_lines": [33],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
@@ -41,7 +53,11 @@
     "main_line": 34,
     "affected_lines": [34],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
@@ -52,7 +68,11 @@
     "main_line": 35,
     "affected_lines": [35],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
@@ -63,7 +83,11 @@
     "main_line": 36,
     "affected_lines": [36],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
@@ -74,7 +98,11 @@
     "main_line": 37,
     "affected_lines": [37],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase. Suggested: employee.getFirstName().toLowerCase(Locale.ROOT) + ...",
@@ -85,7 +113,11 @@
     "main_line": 152,
     "affected_lines": [152],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase. Suggested: employee.getLastName().toLowerCase(Locale.ROOT) + ...",
@@ -96,7 +128,11 @@
     "main_line": 152,
     "affected_lines": [152],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "LocalDate.now() silently uses the system default time-zone. Pass an explicit ZoneId, e.g. LocalDate.now(ZoneId.systemDefault()).",
@@ -107,7 +143,11 @@
     "main_line": 153,
     "affected_lines": [153],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
+    "impacts": [
+      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Avoid using Enum.ordinal(). It is fragile and can break if enum order changes.",
@@ -118,7 +158,11 @@
     "main_line": 30,
     "affected_lines": [30],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/util/LeaveUtils.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/util/LeaveUtils.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Avoid using Enum.ordinal(). It is fragile and can break if enum order changes.",
@@ -129,7 +173,11 @@
     "main_line": 34,
     "affected_lines": [34],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/util/LeaveUtils.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/util/LeaveUtils.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "The type AbstractMap.SimpleEntry was referred by the non-canonical name EnumMap.SimpleEntry.",
@@ -140,7 +188,11 @@
     "main_line": 60,
     "affected_lines": [60],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/LeaveService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/LeaveService.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase in log.info().",
@@ -151,7 +203,11 @@
     "main_line": 135,
     "affected_lines": [135],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/UserService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/UserService.java",
+    "impacts": [
+      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase in log.info().",
@@ -162,7 +218,11 @@
     "main_line": 144,
     "affected_lines": [144],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/UserService.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/service/UserService.java",
+    "impacts": [
+      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Avoid java.util.Date. Prefer java.time.Instant or LocalDate.",
@@ -173,7 +233,11 @@
     "main_line": 39,
     "affected_lines": [39],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtTokenProvider.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/security/JwtTokenProvider.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Avoid java.util.Date. Prefer java.time.Instant or LocalDate.",
@@ -184,7 +248,11 @@
     "main_line": 40,
     "affected_lines": [40],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtTokenProvider.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/security/JwtTokenProvider.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "Specify a Locale when calling String#toUpperCase in authorities.add(...).",
@@ -195,7 +263,11 @@
     "main_line": 47,
     "affected_lines": [47],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtAuthenticationFilter.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/security/JwtAuthenticationFilter.java",
+    "impacts": [
+      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+    ]
   },
   {
     "message": "The field 'objectMapper' is never read.",
@@ -206,6 +278,10 @@
     "main_line": 26,
     "affected_lines": [26],
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/controller/EmployeeController.java",
-    "commit_id": null
+    "commit_id": null,
+    "component": "modfac:src/main/java/com/example/modfac/controller/EmployeeController.java",
+    "impacts": [
+      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+    ]
   }
 ]
