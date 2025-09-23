@@ -7,7 +7,6 @@
     "issue_identifier": "MutablePublicArray",
     "main_line": 31,
     "affected_lines": [31],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -19,7 +18,6 @@
     "issue_identifier": "MutablePublicArray",
     "main_line": 32,
     "affected_lines": [32],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -31,7 +29,6 @@
     "issue_identifier": "MutablePublicArray",
     "main_line": 33,
     "affected_lines": [33],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -43,7 +40,6 @@
     "issue_identifier": "MutablePublicArray",
     "main_line": 34,
     "affected_lines": [34],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -55,7 +51,6 @@
     "issue_identifier": "MutablePublicArray",
     "main_line": 35,
     "affected_lines": [35],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -67,7 +62,6 @@
     "issue_identifier": "MutablePublicArray",
     "main_line": 36,
     "affected_lines": [36],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -79,7 +73,6 @@
     "issue_identifier": "MutablePublicArray",
     "main_line": 37,
     "affected_lines": [37],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -91,7 +84,6 @@
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 152,
     "affected_lines": [152],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -103,7 +95,6 @@
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 152,
     "affected_lines": [152],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -115,7 +106,6 @@
     "issue_identifier": "JavaTimeDefaultTimeZone",
     "main_line": 153,
     "affected_lines": [153],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java",
     "commit_id": null
   },
@@ -127,7 +117,6 @@
     "issue_identifier": "EnumOrdinal",
     "main_line": 30,
     "affected_lines": [30],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/util/LeaveUtils.java",
     "commit_id": null
   },
@@ -139,7 +128,6 @@
     "issue_identifier": "EnumOrdinal",
     "main_line": 34,
     "affected_lines": [34],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/util/LeaveUtils.java",
     "commit_id": null
   },
@@ -151,7 +139,6 @@
     "issue_identifier": "NonCanonicalType",
     "main_line": 60,
     "affected_lines": [60],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/LeaveService.java",
     "commit_id": null
   },
@@ -163,7 +150,6 @@
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 135,
     "affected_lines": [135],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/UserService.java",
     "commit_id": null
   },
@@ -175,7 +161,6 @@
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 144,
     "affected_lines": [144],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/UserService.java",
     "commit_id": null
   },
@@ -187,7 +172,6 @@
     "issue_identifier": "JavaUtilDate",
     "main_line": 39,
     "affected_lines": [39],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtTokenProvider.java",
     "commit_id": null
   },
@@ -199,7 +183,6 @@
     "issue_identifier": "JavaUtilDate",
     "main_line": 40,
     "affected_lines": [40],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtTokenProvider.java",
     "commit_id": null
   },
@@ -211,7 +194,6 @@
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 47,
     "affected_lines": [47],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtAuthenticationFilter.java",
     "commit_id": null
   },
@@ -223,7 +205,6 @@
     "issue_identifier": "UnusedVariable",
     "main_line": 26,
     "affected_lines": [26],
-    "impacts": null,
     "file_path": "C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/controller/EmployeeController.java",
     "commit_id": null
   }
