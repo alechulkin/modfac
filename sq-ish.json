@@ -2,7 +2,7 @@
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
     "rule": "java:S2386",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "MutablePublicArray:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:31",
     "issue_identifier": "MutablePublicArray",
     "main_line": 31,
@@ -11,13 +11,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
     "rule": "java:S2386",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "MutablePublicArray:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:32",
     "issue_identifier": "MutablePublicArray",
     "main_line": 32,
@@ -26,13 +26,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
     "rule": "java:S2386",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "MutablePublicArray:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:33",
     "issue_identifier": "MutablePublicArray",
     "main_line": 33,
@@ -41,13 +41,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
     "rule": "java:S2386",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "MutablePublicArray:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:34",
     "issue_identifier": "MutablePublicArray",
     "main_line": 34,
@@ -56,13 +56,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
     "rule": "java:S2386",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "MutablePublicArray:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:35",
     "issue_identifier": "MutablePublicArray",
     "main_line": 35,
@@ -71,13 +71,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
     "rule": "java:S2386",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "MutablePublicArray:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:36",
     "issue_identifier": "MutablePublicArray",
     "main_line": 36,
@@ -86,13 +86,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Non-empty arrays are mutable, so this public static final array is not a constant. Prefer an ImmutableList, or return a defensive copy.",
     "rule": "java:S2386",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "MutablePublicArray:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:37",
     "issue_identifier": "MutablePublicArray",
     "main_line": 37,
@@ -101,13 +101,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase. Suggested: employee.getFirstName().toLowerCase(Locale.ROOT) + ...",
     "rule": "java:S1448",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "StringCaseLocaleUsage:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:152",
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 152,
@@ -116,13 +116,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+      { "softwareQuality": "RELIABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase. Suggested: employee.getLastName().toLowerCase(Locale.ROOT) + ...",
     "rule": "java:S1448",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "StringCaseLocaleUsage:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:152",
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 152,
@@ -131,13 +131,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+      { "softwareQuality": "RELIABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "LocalDate.now() silently uses the system default time-zone. Pass an explicit ZoneId, e.g. LocalDate.now(ZoneId.systemDefault()).",
     "rule": "java:S2143",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "JavaTimeDefaultTimeZone:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/EmployeeService.java:153",
     "issue_identifier": "JavaTimeDefaultTimeZone",
     "main_line": 153,
@@ -146,13 +146,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/EmployeeService.java",
     "impacts": [
-      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+      { "softwareQuality": "RELIABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Avoid using Enum.ordinal(). It is fragile and can break if enum order changes.",
     "rule": "java:S3351",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "EnumOrdinal:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/util/LeaveUtils.java:30",
     "issue_identifier": "EnumOrdinal",
     "main_line": 30,
@@ -161,13 +161,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/util/LeaveUtils.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Avoid using Enum.ordinal(). It is fragile and can break if enum order changes.",
     "rule": "java:S3351",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "EnumOrdinal:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/util/LeaveUtils.java:34",
     "issue_identifier": "EnumOrdinal",
     "main_line": 34,
@@ -176,13 +176,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/util/LeaveUtils.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "The type AbstractMap.SimpleEntry was referred by the non-canonical name EnumMap.SimpleEntry.",
     "rule": "java:S1001",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "NonCanonicalType:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/LeaveService.java:60",
     "issue_identifier": "NonCanonicalType",
     "main_line": 60,
@@ -191,13 +191,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/LeaveService.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase in log.info().",
     "rule": "java:S1448",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "StringCaseLocaleUsage:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/UserService.java:135",
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 135,
@@ -206,13 +206,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/UserService.java",
     "impacts": [
-      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+      { "softwareQuality": "RELIABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Specify a Locale when calling String#toLowerCase in log.info().",
     "rule": "java:S1448",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "StringCaseLocaleUsage:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/service/UserService.java:144",
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 144,
@@ -221,13 +221,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/service/UserService.java",
     "impacts": [
-      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+      { "softwareQuality": "RELIABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Avoid java.util.Date. Prefer java.time.Instant or LocalDate.",
     "rule": "java:S3457",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "JavaUtilDate:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtTokenProvider.java:39",
     "issue_identifier": "JavaUtilDate",
     "main_line": 39,
@@ -236,13 +236,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/security/JwtTokenProvider.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Avoid java.util.Date. Prefer java.time.Instant or LocalDate.",
     "rule": "java:S3457",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "JavaUtilDate:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtTokenProvider.java:40",
     "issue_identifier": "JavaUtilDate",
     "main_line": 40,
@@ -251,13 +251,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/security/JwtTokenProvider.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "Specify a Locale when calling String#toUpperCase in authorities.add(...).",
     "rule": "java:S1448",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "StringCaseLocaleUsage:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/security/JwtAuthenticationFilter.java:47",
     "issue_identifier": "StringCaseLocaleUsage",
     "main_line": 47,
@@ -266,13 +266,13 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/security/JwtAuthenticationFilter.java",
     "impacts": [
-      { "softwareQuality": "RELIABILITY", "severity": "MINOR" }
+      { "softwareQuality": "RELIABILITY", "severity": "LOW" }
     ]
   },
   {
     "message": "The field 'objectMapper' is never read.",
     "rule": "java:S1481",
-    "severity": "MINOR",
+    "severity": "LOW",
     "key": "UnusedVariable:C:/Users/oleksandr.chulkin/Documents/repo/modfac/src/main/java/com/example/modfac/controller/EmployeeController.java:26",
     "issue_identifier": "UnusedVariable",
     "main_line": 26,
@@ -281,7 +281,7 @@
     "commit_id": null,
     "component": "modfac:src/main/java/com/example/modfac/controller/EmployeeController.java",
     "impacts": [
-      { "softwareQuality": "MAINTAINABILITY", "severity": "MINOR" }
+      { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
     ]
   }
 ]
