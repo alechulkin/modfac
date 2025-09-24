@@ -45,18 +45,6 @@ public class JwtTokenProvider {
                 .expiration(validity)
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
-
-//        Claims claims = Jwts.claims().subject(username).build();
-////        claims.put("role", role);
-//        claims.put("authorities", List.of("ROLE_" + role.toUpperCase()));
-//
-//
-//        Date now = new Date();
-//        Date validity = new Date(now.getTime() + jwtExpiration);
-//
-//        return Jwts.builder().claims(claims).issuedAt(now).expiration(validity)
-//                .signWith(key, Jwts.SIG.HS256)
-//                .compact();
     }
 
     /**
