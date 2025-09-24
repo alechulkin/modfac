@@ -33,7 +33,7 @@ public class EmployeeService {
     public static final String[] STREET_NAMES = {"Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St"};
     public static final String[] CITY_NAMES = {"New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"};
     public static final String[] STATE_NAMES = {"NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"};
-    public static final String[] COUNTRY_NAMES = {"France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica"};
+    public static final List<String> COUNTRY_NAMES = Collections.unmodifiableList(Arrays.asList("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica"));
     public static final String[] ZIP_CODES = {"10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101"};
     public static final int NUM_EMPLOYEES = 500;
 
@@ -168,7 +168,7 @@ public class EmployeeService {
         char blockLetter = (char) ('A' + random.nextInt(26));
         address.setBlock(String.valueOf(blockLetter) + random.nextInt(20) + 1);
         address.setBuilding(String.valueOf(random.nextInt(200) + 1));
-        address.setCountry(COUNTRY_NAMES[random.nextInt(COUNTRY_NAMES.length)]);
+        address.setCountry(COUNTRY_NAMES.get(random.nextInt(COUNTRY_NAMES.size())));
         address.setFloor(random.nextInt(40));
     
         return address;
