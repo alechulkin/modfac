@@ -28,8 +28,7 @@ public final class LeaveUtils {
 
     public static LeaveType getRandomLeaveType() {
         LeaveType[] leaveTypes = LeaveType.values();
-        int randomIndex = RANDOM.nextInt(leaveTypes.length);
-        return leaveTypes[randomIndex];
+        return leaveTypes[RANDOM.nextInt(leaveTypes.length)];
     }
 
     public static Status getRandomStatus() {
