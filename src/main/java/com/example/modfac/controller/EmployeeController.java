@@ -23,8 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
     private final DataService dataService;
-    private final ObjectMapper objectMapper;
-
     @PostMapping
     public ResponseEntity<Employee> onboardEmployee(
             @Valid @RequestBody OnboardEmployeeDTO dto,
