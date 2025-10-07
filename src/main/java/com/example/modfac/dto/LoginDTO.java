@@ -5,9 +5,22 @@ import lombok.Data;
 
 @Data
 public class LoginDTO {
-    @NotBlank
-    private String username;
+    /**
+     * Data Transfer Object (DTO) for handling login information.
+     * This class is used to encapsulate the username and password
+     * provided by the user during the login process.
+     */
+    /**
+         * The username provided by the user during the login process.
+         * This field is mandatory and cannot be blank.
+         */
+        @NotBlank
+        private String username;
     
-    @NotBlank
-    private String password;
+    /**
+         * The password provided by the user during the login process.
+         * This field is mandatory and cannot be blank.
+         */
+        @NotBlank
+        private String password;
 }
