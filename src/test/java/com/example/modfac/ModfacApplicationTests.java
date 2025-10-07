@@ -6,9 +6,16 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootTest
 class ModfacApplicationTests {
+    /**
+     * This class contains test cases for the Modfac application.
+     * It ensures that the application context loads correctly.
+     */
 
-	@Test
-	void contextLoads() {
-	}
+	/**
+     * This test ensures that the Spring application context loads successfully.
+     */
+    @Test
+    void contextLoads() {
+    }
 
 }
