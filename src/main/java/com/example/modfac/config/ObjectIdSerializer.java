@@ -52,29 +52,5 @@ public class ObjectIdSerializer extends StdSerializer<ObjectId> {
     public void serialize(ObjectId objectId, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeString(objectId.toHexString());
     }
-
-    /**
-     * Parameterized constructor for ObjectIdSerializer.
-     * <p>
-     * This constructor allows specifying a type to be used by the serializer.
-     * It is typically used when a custom serializer is required for a specific type of {@link ObjectId}.
-     * </p>
-     *
-     * @param t the class type to be used by the serializer, usually {@link ObjectId}.
-     */
-    public ObjectIdSerializer(Class<ObjectId> t) {
-        super(t);
-    }
-
-    /**
-     * Default constructor for ObjectIdSerializer.
-     * <p>
-     * This constructor initializes the serializer without a specific type, allowing it to handle
-     * serialization of {@link ObjectId} instances to their hexadecimal string representation.
-     * </p>
-     */
-    public ObjectIdSerializer() {
-        this(null);
-    }
 }
 
