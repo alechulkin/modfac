@@ -9,15 +9,4 @@ public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
         super(message);
     }
-
-    /**
-     * Exception thrown when a requested resource is not found.
-     * <p>
-     * This exception is a runtime exception and can be used to indicate
-     * that a specific resource, such as an entity or file, could not be located.
-     * </p>
-     */
-    public ResourceNotFoundException(String message) {
-        super(message);
-    }
 }
