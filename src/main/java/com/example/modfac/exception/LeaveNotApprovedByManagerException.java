@@ -9,5 +9,5 @@ public class LeaveNotApprovedByManagerException extends RuntimeException {
     public LeaveNotApprovedByManagerException(String message) {
         super(message);
     }
-    
+
 }
