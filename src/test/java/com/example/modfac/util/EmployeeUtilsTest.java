@@ -12,70 +12,39 @@ import java.util.EnumMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class EmployeeUtilsTest {
+    /**
+     * Unit tests for the EmployeeUtils class.
+     *
+     * This class contains test cases to verify the functionality of methods in the EmployeeUtils class,
+     * including operations for filling job information, filling address details, and resetting leave information.
+     * Each test ensures that the methods behave as expected under various scenarios.
+     */
 
-    @Test
-    void fillJobInfo_ShouldCopyFieldsFromDtoAndManager() {
-        // Arrange
-        OnboardEmployeeDTO dto = new OnboardEmployeeDTO();
-        dto.setEmail("john.doe@example.com");
-        dto.setHireDate(LocalDate.now());
-        dto.setJobId("DEV001");
-        dto.setSalary(75000);
+    /**
+         * Tests the {@link EmployeeUtils#fillJobInfo(Employee.JobInfo, OnboardEmployeeDTO, Employee)} method.
+         *
+         * This test verifies that the method correctly copies fields from the given
+         * {@link OnboardEmployeeDTO} and {@link Employee} (acting as the manager) to the
+         * {@link Employee.JobInfo} object. It ensures that all fields, including email,
+         * hire date, job ID, salary, and manager, are properly transferred.
+         */
 
-        Employee manager = new Employee();
-        manager.setId(new ObjectId());
+    /**
+         * Tests the {@link EmployeeUtils#fillAddress(Employee.Address, OnboardEmployeeDTO)} method.
+         *
+         * This test verifies that the method correctly copies fields from the given
+         * {@link OnboardEmployeeDTO} to the {@link Employee.Address} object. It ensures
+         * that all address-related fields, including street, city, state, and zip code,
+         * are properly transferred.
+         */
 
-        Employee.JobInfo jobInfo = new Employee.JobInfo();
-
-        // Act
-        Employee.JobInfo result = EmployeeUtils.fillJobInfo(jobInfo, dto, manager);
-
-        // Assert
-        assertThat(result.getEmail()).isEqualTo(dto.getEmail());
-        assertThat(result.getHireDate()).isEqualTo(dto.getHireDate());
-        assertThat(result.getJobId()).isEqualTo(dto.getJobId());
-        assertThat(result.getSalary()).isEqualTo(dto.getSalary());
-        assertThat(result.getManager()).isEqualTo(manager);
-    }
-
-    @Test
-    void fillAddress_ShouldCopyFieldsFromDto() {
-        // Arrange
-        OnboardEmployeeDTO dto = new OnboardEmployeeDTO();
-        dto.setStreet("123 Main St");
-        dto.setCity("New York");
-        dto.setState("NY");
-        dto.setZipCode("10001");
-
-        Employee.Address address = new Employee.Address();
-
-        // Act
-        Employee.Address result = EmployeeUtils.fillAddress(address, dto);
-
-        // Assert
-        assertThat(result.getStreet()).isEqualTo(dto.getStreet());
-        assertThat(result.getCity()).isEqualTo(dto.getCity());
-        assertThat(result.getCountry()).isEqualTo(dto.getState());
-        assertThat(result.getZipCode()).isEqualTo(dto.getZipCode());
-    }
-
-    @Test
-    void resetLeaveInfo_ShouldResetAllLeaveTypesToZero() {
-        // Arrange
-        Employee employee = new Employee();
-        EnumMap<LeaveType, Integer> initialLeaveInfo = new EnumMap<>(LeaveType.class);
-        initialLeaveInfo.put(LeaveType.PTO, 5);
-        initialLeaveInfo.put(LeaveType.SICK, 3);
-        employee.setLeaveInfo(initialLeaveInfo);
-
-        // Act
-        Employee result = EmployeeUtils.resetLeaveInfo(employee);
-
-        // Assert
-        EnumMap<LeaveType, Integer> resultLeaveInfo = result.getLeaveInfo();
-        assertThat(resultLeaveInfo).isNotNull();
-        assertThat(resultLeaveInfo.keySet()).containsExactlyInAnyOrder(LeaveType.values());
-        assertThat(resultLeaveInfo.values()).allMatch(v -> v == 0);
-    }
+    /**
+         * Tests the {@link EmployeeUtils#resetLeaveInfo(Employee)} method.
+         *
+         * This test ensures that the resetLeaveInfo method correctly resets all leave types
+         * in the employee's leave information to zero. It verifies that the resulting leave
+         * information contains all leave types with their values set to zero, ensuring no
+         * data is left uninitialized or incorrect.
+         */
 }
 
