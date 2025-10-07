@@ -9,15 +9,5 @@ public class LeaveNotApprovedByManagerException extends RuntimeException {
     public LeaveNotApprovedByManagerException(String message) {
         super(message);
     }
-
-    /**
-     * Exception thrown when a leave request is not approved by the manager.
-     * <p>
-     * This exception is used to indicate that a leave request cannot proceed
-     * because it has not been approved by the appropriate authority.
-     * </p>
-     */
-    public LeaveNotApprovedByManagerException(String message) {
-        super(message);
-    }
+    
 }
