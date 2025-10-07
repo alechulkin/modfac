@@ -15,14 +15,28 @@ import java.text.SimpleDateFormat;
 
 @Configuration
 public class JacksonConfig {
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(ObjectId.class, new ObjectIdSerializer());
-        mapper.registerModule(module);
-        mapper.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
-    }
+    /**
+     * Configuration class for customizing the Jackson ObjectMapper.
+     * <p>
+     * This class defines a Spring bean for the ObjectMapper, which is configured
+     * with custom serializers, date formats, and modules to handle specific data types
+     * such as Java 8 date/time types and MongoDB ObjectId.
+     */
+    /**
+         * Creates and configures an {@link ObjectMapper} bean for JSON serialization and deserialization.
+         * <p>
+         * The configured {@link ObjectMapper} includes custom serializers, date formats, and modules
+         * to handle specific data types such as Java 8 date/time types and MongoDB ObjectId.
+         *
+         * @return a configured {@link ObjectMapper} instance
+         */
+        public ObjectMapper objectMapper() {
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(ObjectId.class, new ObjectIdSerializer());
+            mapper.registerModule(module);
+            mapper.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
+            mapper.registerModule(new JavaTimeModule());
+            return mapper;
+        }
 }
