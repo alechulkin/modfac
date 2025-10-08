@@ -19,10 +19,12 @@ public class LeaveController {
 
     @PostMapping
     public ResponseEntity<Leave> requestLeave(@Valid @RequestBody CaptureLeaveDTO dto) {
-
+    
+        log.debug("requestLeave method invoked");
         log.info("Processing leave request for employee ID: {}, type: {}", dto.getEmployeeId(), dto.getLeaveType());
-
+    
         dataService.capture(dto);
+        log.debug("requestLeave method finished");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
