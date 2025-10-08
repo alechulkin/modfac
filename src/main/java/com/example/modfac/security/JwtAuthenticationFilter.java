@@ -24,6 +24,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private static org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
@@ -34,24 +35,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-
+    
+        LOGGER.debug("doFilterInternal method invoked");
+    
         try {
             String jwt = getJwtFromRequest(request);
-
+    
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 String username = tokenProvider.getUsername(jwt);
                 String role = tokenProvider.getRole(jwt);
-
+    
                 List<GrantedAuthority> authorities = new ArrayList<>();
                 if (StringUtils.hasText(role)) {
                     authorities.add(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
                 }
-
+    
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, authorities);
-
+    
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
@@ -64,25 +67,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
-
+    
         filterChain.doFilter(request, response);
+    
+        LOGGER.debug("doFilterInternal method finished");
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
+        LOGGER.debug("shouldNotFilter method invoked");
+    
         String contextPath = request.getContextPath();
         String path = request.getRequestURI().substring(contextPath.length());
-//        String path = request.getRequestURI();
-
-        return !(PATH_MATCHER.match("/api/employees/**", path) ||
+    
+        boolean shouldNotFilter = !(PATH_MATCHER.match("/api/employees/**", path) ||
                 PATH_MATCHER.match("/auth/register/**", path));
+    
+        LOGGER.debug("shouldNotFilter method finished");
+        return shouldNotFilter;
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
+        LOGGER.debug("getJwtFromRequest method invoked");
+    
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
+    
+        LOGGER.debug("getJwtFromRequest method finished");
         return null;
     }
 }
