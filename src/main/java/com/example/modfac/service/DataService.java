@@ -24,26 +24,34 @@ public class DataService {
 
     @Transactional
     public Employee onboard(OnboardEmployeeDTO dto) {
-        log.info("Processing onboarding for employee: {} {}",
-                dto.getFirstName(), dto.getLastName());
-
+        log.debug("Entering onboard method with DTO: {}", dto);
+        log.info("Processing onboarding for employee: {} {}", dto.getFirstName(), dto.getLastName());
+    
         // Check if the user is an admin
         userService.verifyAdminUser(dto.getCreatedBy());
-        return employeeService.onboard(dto);
+        Employee onboardedEmployee = employeeService.onboard(dto);
+    
+        log.debug("Exiting onboard method with onboarded employee: {}", onboardedEmployee);
+        return onboardedEmployee;
     }
 
     @Transactional
     public Leave capture(CaptureLeaveDTO dto) {
+        log.debug("Entering capture method with DTO: {}", dto);
         log.info("Processing leave request for employee ID: {}, type: {}", dto.getEmployeeId(), dto.getLeaveType());
-
+    
         Employee employee = employeeService.verifyUserAndItsManagerAndApprover(dto);
         Map.Entry<Leave, Integer> captureResult = leaveService.capture(dto, employee);
         employeeService.updateLeaveInfo(employee, captureResult);
+    
+        log.debug("Exiting capture method with captured leave: {}", captureResult.getKey());
         return captureResult.getKey();
     }
 
     @Transactional
     public void generateData() {
+        log.debug("Entering generateData method");
+    
         Map<Employee, Employee> employeeEmployeeMap = employeeService.generateEmployees(EMPLOYEES_NUMBER);
         for (Map.Entry<Employee, Employee> entry : employeeEmployeeMap.entrySet()) {
             Employee employee = entry.getKey();
@@ -53,5 +61,7 @@ public class DataService {
             }
         }
         userService.generateUsers();
+    
+        log.debug("Exiting generateData method");
     }
 }
