@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @ComponentScan(basePackages = "com.example.modfac")
 @EnableMongoRepositories
 public class ModfacApplication {
-    private static org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ModfacApplication.class);
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ModfacApplication.class);
 
 	public static void main(String[] args) {
     		LOGGER.debug("main method invoked");

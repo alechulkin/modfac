@@ -6,7 +6,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class LeaveDatesValidator implements ConstraintValidator<ValidLeaveDates, CaptureLeaveDTO> {
-    private static org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LeaveDatesValidator.class);
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LeaveDatesValidator.class);
 
     @Override
     public void initialize(ValidLeaveDates validLeaveDates) {

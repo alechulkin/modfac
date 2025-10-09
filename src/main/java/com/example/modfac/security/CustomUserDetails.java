@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
-    private static org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CustomUserDetails.class);
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CustomUserDetails.class);
 
     private String username;
     private String password;
