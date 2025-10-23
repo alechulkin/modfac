@@ -24,6 +24,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     private final JwtTokenProvider tokenProvider;
@@ -36,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
     
-        LOGGER.debug("doFilterInternal method invoked");
+        LOG.debug("doFilterInternal method invoked");
     
         try {
             String jwt = getJwtFromRequest(request);
@@ -65,17 +66,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
+            LOG.error("Could not set user authentication in security context", ex);
         }
     
         filterChain.doFilter(request, response);
     
-        LOGGER.debug("doFilterInternal method finished");
+        LOG.debug("doFilterInternal method finished");
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        LOGGER.debug("shouldNotFilter method invoked");
+        LOG.debug("shouldNotFilter method invoked");
     
         String contextPath = request.getContextPath();
         String path = request.getRequestURI().substring(contextPath.length());
@@ -83,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         boolean shouldNotFilter = !(PATH_MATCHER.match("/api/employees/**", path) ||
                 PATH_MATCHER.match("/auth/register/**", path));
     
-        LOGGER.debug("shouldNotFilter method finished");
+        LOG.debug("shouldNotFilter method finished");
         return shouldNotFilter;
     }
 
