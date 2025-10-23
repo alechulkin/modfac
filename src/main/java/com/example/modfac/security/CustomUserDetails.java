@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
+    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(CustomUserDetails.class);
     private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CustomUserDetails.class);
 
     private String username;
@@ -26,57 +27,57 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        LOGGER.debug("getAuthorities method invoked");
+        LOG.debug("getAuthorities method invoked");
         Collection<? extends GrantedAuthority> result = authorities;
-        LOGGER.debug("getAuthorities method finished");
+        LOG.debug("getAuthorities method finished");
         return result;
     }
 
     @Override
     public String getPassword() {
-        LOGGER.debug("getPassword method invoked");
+        LOG.debug("getPassword method invoked");
         String result = password;
-        LOGGER.debug("getPassword method finished");
+        LOG.debug("getPassword method finished");
         return result;
     }
 
     @Override
     public String getUsername() {
-        LOGGER.debug("getUsername method invoked");
+        LOG.debug("getUsername method invoked");
         String result = username;
-        LOGGER.debug("getUsername method finished");
+        LOG.debug("getUsername method finished");
         return result;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        LOGGER.debug("isAccountNonExpired method invoked");
+        LOG.debug("isAccountNonExpired method invoked");
         boolean result = true; // Update this based on business logic
-        LOGGER.debug("isAccountNonExpired method finished");
+        LOG.debug("isAccountNonExpired method finished");
         return result;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        LOGGER.debug("isAccountNonLocked method invoked");
+        LOG.debug("isAccountNonLocked method invoked");
         boolean result = true; // Update this based on business logic
-        LOGGER.debug("isAccountNonLocked method finished");
+        LOG.debug("isAccountNonLocked method finished");
         return result;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        LOGGER.debug("isCredentialsNonExpired method invoked");
+        LOG.debug("isCredentialsNonExpired method invoked");
         boolean result = true; // Update this based on business logic
-        LOGGER.debug("isCredentialsNonExpired method finished");
+        LOG.debug("isCredentialsNonExpired method finished");
         return result;
     }
 
     @Override
     public boolean isEnabled() {
-        LOGGER.debug("isEnabled method invoked");
+        LOG.debug("isEnabled method invoked");
         boolean result = enabled;
-        LOGGER.debug("isEnabled method finished");
+        LOG.debug("isEnabled method finished");
         return result;
     }
 }
