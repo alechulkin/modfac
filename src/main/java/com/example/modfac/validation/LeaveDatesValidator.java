@@ -6,17 +6,18 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class LeaveDatesValidator implements ConstraintValidator<ValidLeaveDates, CaptureLeaveDTO> {
+    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(LeaveDatesValidator.class);
     private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LeaveDatesValidator.class);
 
     @Override
     public void initialize(ValidLeaveDates validLeaveDates) {
-        LOGGER.debug("initialize method invoked");
-        LOGGER.debug("initialize method finished");
+        LOG.debug("initialize method invoked");
+        LOG.debug("initialize method finished");
     }
 
     @Override
     public boolean isValid(CaptureLeaveDTO dto, ConstraintValidatorContext context) {
-        LOGGER.debug("isValid method invoked");
+        LOG.debug("isValid method invoked");
     
         if (dto == null || dto.getStartDate() == null || dto.getEndDate() == null) {
             return true; // Let @NotNull handle this
@@ -31,7 +32,7 @@ public class LeaveDatesValidator implements ConstraintValidator<ValidLeaveDates,
             return false;
         }
     
-        LOGGER.debug("isValid method finished");
+        LOG.debug("isValid method finished");
         return true;
     }
 
