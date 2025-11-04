@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.AbstractMap;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
@@ -30,38 +31,37 @@ public class LeaveService {
      * Process the leave capture request with updated document structure
      */
         public Map.Entry<Leave, Integer> capture(CaptureLeaveDTO leaveDTO, Employee employee) {
-            log.debug("capture method invoked");
+        log.debug("capture method invoked");
     
-            LocalDate startDate = leaveDTO.getStartDate();
-            LocalDate endDate = leaveDTO.getEndDate();
-            int leaveDays = getLeaveDays(startDate, endDate);
+        LocalDate startDate = leaveDTO.getStartDate();
+        LocalDate endDate = leaveDTO.getEndDate();
+        int leaveDays = getLeaveDays(startDate, endDate);
     
-            LeaveType leaveType = leaveDTO.getLeaveType();
-            Integer balance = employee.getLeaveInfo().get(leaveType);
-            if (balance == null) {
-                balance = 0;
-            }
-            if (balance < leaveDays) {
-                log.warn("Requested {} days but only {} available", leaveDays, balance);
-                throw new InsufficientLeaveBalanceException(
-                    "Insufficient leave balance. Available: " + balance + 
-                    ", Requested: " + leaveDays);
-            }
-    
-            Employee manager = employee.getJobInfo().getManager();
-            Leave leave = new Leave();
-            leave.setEmployee(employee);
-            leave.setLeaveType(leaveType);
-            leave.setStartDate(startDate);
-            leave.setEndDate(endDate);
-            leave.setStatus(leaveDTO.getStatus());
-            leave.setApprovedBy(manager);
-            leave = leaveRepository.save(leave);
-            log.info("Leave request processed successfully with ID: {}", leave.getId());
-    
-            log.debug("capture method finished");
-            return new EnumMap.SimpleEntry<>(leave, balance - leaveDays);
+        LeaveType leaveType = leaveDTO.getLeaveType();
+        Integer balance = employee.getLeaveInfo().get(leaveType);
+        if (balance == null) {
+            balance = 0;
         }
+        if (balance < leaveDays) {
+            log.warn("Requested {} days but only {} available", leaveDays, balance);
+            throw new InsufficientLeaveBalanceException(
+                String.format("Insufficient leave balance. Available: %d, Requested: %d", balance, leaveDays));
+        }
+    
+        Employee manager = employee.getJobInfo().getManager();
+        Leave leave = new Leave();
+        leave.setEmployee(employee);
+        leave.setLeaveType(leaveType);
+        leave.setStartDate(startDate);
+        leave.setEndDate(endDate);
+        leave.setStatus(leaveDTO.getStatus());
+        leave.setApprovedBy(manager);
+        leave = leaveRepository.save(leave);
+        log.info("Leave request processed successfully with ID: {}", leave.getId());
+    
+        log.debug("capture method finished");
+        return new AbstractMap.SimpleEntry<>(leave, balance - leaveDays);
+    }
 
         @Transactional
         public void generateLeave(Employee employee, Employee manager) {
