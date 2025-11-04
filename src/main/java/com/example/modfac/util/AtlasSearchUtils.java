@@ -25,30 +25,35 @@ public class AtlasSearchUtils {
     /**
      * List all search indexes in the database
      */
-    public List<Document> listAllSearchIndexes(String collectionName) {
-        List<Document> indexes = new ArrayList<>();
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
-
-        for (Document index : database.getCollection(collectionName).listIndexes()) {
-            indexes.add(index);
+        public List<Document> listAllSearchIndexes(String collectionName) {
+            log.debug("listAllSearchIndexes method invoked");
+            List<Document> indexes = new ArrayList<>();
+            MongoDatabase database = mongoClient.getDatabase(databaseName);
+    
+            for (Document index : database.getCollection(collectionName).listIndexes()) {
+                indexes.add(index);
+            }
+    
+            log.debug("listAllSearchIndexes method finished");
+            return indexes;
         }
-
-        return indexes;
-    }
 
     /**
      * Delete a search index
      */
-    public void deleteSearchIndex(String indexName, String collectionName) {
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
-
-        try {
-            database.runCommand(new Document("dropSearchIndex", collectionName)
-                    .append("name", indexName));
-            log.info("Deleted search index '{}' from collection '{}'", indexName, collectionName);
-        } catch (Exception e) {
-            log.error("Failed to delete search index: {}", e.getMessage(), e);
-            throw e;
+        public void deleteSearchIndex(String indexName, String collectionName) {
+            log.debug("deleteSearchIndex method invoked");
+            MongoDatabase database = mongoClient.getDatabase(databaseName);
+    
+            try {
+                database.runCommand(new Document("dropSearchIndex", collectionName)
+                        .append("name", indexName));
+                log.info("Deleted search index '{}' from collection '{}'", indexName, collectionName);
+            } catch (Exception e) {
+                log.error("Failed to delete search index: {}", e.getMessage(), e);
+                throw e;
+            }
+    
+            log.debug("deleteSearchIndex method finished");
         }
-    }
 }

@@ -24,22 +24,27 @@ public class AuthController {
 
     @PostMapping("/register/admin")
     public ResponseEntity<?> createAdminUser(@Valid @RequestBody RegisterUserDTO registerRequest) {
+        log.debug("createAdminUser method invoked");
         userService.createAdmin(registerRequest);
+        log.debug("createAdminUser method finished");
         return ResponseEntity.ok(new MessageResponse("Admin user created successfully"));
     }
 
     @PostMapping("/register/user")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO registerRequest) {
+        log.debug("registerUser method invoked");
         userService.createUser(registerRequest);
+        log.debug("registerUser method finished");
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
+        log.debug("authenticateUser method invoked");
         String jwt = userService.login(loginRequest);
         String username = loginRequest.getUsername();
         User user = userService.getCurrentUser(username);
-
+        log.debug("authenticateUser method finished");
         return ResponseEntity.ok(JwtResponse.builder().username(username)
                 .role(user.getRole().toString()).token(jwt).build());
     }

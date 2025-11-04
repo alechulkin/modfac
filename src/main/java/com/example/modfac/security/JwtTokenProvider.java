@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
-
+    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(JwtTokenProvider.class);
     @Value("${jwt.secret:defaultSecretKey}")
     private String jwtSecret;
 
@@ -28,39 +28,53 @@ public class JwtTokenProvider {
     /**
      * Create JWT token
      */
-    public String createToken(String username, String role) {
+    /**
+         * Create JWT token
+         */
+        public String createToken(String username, String role) {
+        LOG.debug("createToken method invoked");
+    
         SecretKey key = getSecretKey();
-
-
+    
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", username); // subject claim
         claims.put("role", role);    // custom role claim
-
+    
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtExpiration);
-
-        return Jwts.builder()
+    
+        String token = Jwts.builder()
                 .claims(claims)
                 .issuedAt(now)
                 .expiration(validity)
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
+    
+        LOG.debug("createToken method finished");
+        return token;
     }
 
     /**
      * Validate JWT token
      */
-    public boolean validateToken(String token) {
+    /**
+         * Validate JWT token
+         */
+        public boolean validateToken(String token) {
+        LOG.debug("validateToken method invoked");
         try {
             SecretKey key = getSecretKey();
-
+    
             Jws<Claims> claims = Jwts.parser()
                     .verifyWith(key)
                     .build()
                     .parseSignedClaims(token);
-
-            return !claims.getPayload().getExpiration().before(new Date());
+    
+            boolean isValid = !claims.getPayload().getExpiration().before(new Date());
+            LOG.debug("validateToken method finished");
+            return isValid;
         } catch (JwtException | IllegalArgumentException e) {
+            LOG.debug("validateToken method finished");
             return false;
         }
     }
@@ -68,35 +82,56 @@ public class JwtTokenProvider {
     /**
      * Get username from JWT token
      */
-    public String getUsername(String token) {
+    /**
+         * Get username from JWT token
+         */
+        public String getUsername(String token) {
+        LOG.debug("getUsername method invoked");
+    
         SecretKey key = getSecretKey();
-
-        return Jwts.parser()
+    
+        String username = Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
+    
+        LOG.debug("getUsername method finished");
+        return username;
     }
 
     /**
      * Get user role from JWT token
      */
-    public String getRole(String token) {
+    /**
+         * Get user role from JWT token
+         */
+        public String getRole(String token) {
+        LOG.debug("getRole method invoked");
+    
         SecretKey key = getSecretKey();
-
-        return Jwts.parser()
+    
+        String role = Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .get("role", String.class);
+    
+        LOG.debug("getRole method finished");
+        return role;
     }
 
-    private SecretKey getSecretKey() {
+    /**
+         * Get the secret key for signing JWT tokens
+         */
+        private SecretKey getSecretKey() {
+        LOG.debug("getSecretKey method invoked");
         if (secretKey == null) {
             secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_16));
         }
+        LOG.debug("getSecretKey method finished");
         return secretKey;
     }
 }

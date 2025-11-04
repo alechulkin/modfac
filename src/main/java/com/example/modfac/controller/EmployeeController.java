@@ -22,6 +22,8 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class EmployeeController {
+    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(EmployeeController.class);
+    private static final org.slf4j.Logger APPLICATION_LOGGER = org.slf4j.LoggerFactory.getLogger(EmployeeController.class);
     private final DataService dataService;
     @PostMapping
     public ResponseEntity<Employee> onboardEmployee(
@@ -49,9 +51,9 @@ public class EmployeeController {
 
     private Employee onboard(OnboardEmployeeDTO dto, UserDetails userDetails) {
         dto.setCreatedBy(userDetails.getUsername());
-        log.info("Received request to onboard employee: {} {}",
+        LOG.info("Received request to onboard employee: {} {}",
                 dto.getFirstName(), dto.getLastName());
-
+    
         return dataService.onboard(dto);
     }
 }
