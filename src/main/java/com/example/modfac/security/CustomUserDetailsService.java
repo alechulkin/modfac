@@ -15,8 +15,6 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(CustomUserDetailsService.class);
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CustomUserDetailsService.class);
-
     private final UserRepository userRepository;
 
     @Override

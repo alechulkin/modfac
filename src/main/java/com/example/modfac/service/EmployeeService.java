@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,16 +29,16 @@ import static com.example.modfac.util.EmployeeUtils.*;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
-    public static final String[] FIRST_NAMES = {"John", "Emily", "Michael", "Sarah", "William", "Olivia", "James", "Ava", "Robert", "Isabella"};
-    public static final String[] LAST_NAMES = {"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor"};
-    public static final String[] STREET_NAMES = {"Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St"};
-    public static final String[] CITY_NAMES = {"New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"};
-    public static final String[] STATE_NAMES = {"NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"};
-        /**
-         * An immutable list of country names that can be safely used without concerns about mutability.
-         */
-        public static final List<String> COUNTRY_NAMES = Collections.unmodifiableList(Arrays.asList("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica"));
-    public static final List<String> ZIP_CODES = Collections.unmodifiableList(Arrays.asList("10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101"));
+    public static final List<String> FIRST_NAMES = List.of("John", "Emily", "Michael", "Sarah", "William", "Olivia", "James", "Ava", "Robert", "Isabella");
+    private static final List<String> LAST_NAMES = List.of("Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor");
+    private static final List<String> STREET_NAMES = List.of("Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St");
+    private static final List<String> CITY_NAMES = List.of("New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose");
+    private static final List<String> STATE_NAMES = List.of("NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA");
+    /**
+     * An immutable list of country names that can be safely used without concerns about mutability.
+     */
+    public static final List<String> COUNTRY_NAMES = List.of("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica");
+    private static final List<String> ZIP_CODES = List.of("10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101");
     public static final int NUM_EMPLOYEES = 500;
 
     private final Random random = ThreadLocalRandom.current();
@@ -128,8 +129,8 @@ public class EmployeeService {
                 Employee employee = new Employee();
     
                 // Random name
-                employee.setFirstName(FIRST_NAMES[random.nextInt(FIRST_NAMES.length)]);
-                employee.setLastName(LAST_NAMES[random.nextInt(LAST_NAMES.length)]);
+                employee.setFirstName(FIRST_NAMES.get(random.nextInt(FIRST_NAMES.size())));
+                employee.setLastName(LAST_NAMES.get(random.nextInt(LAST_NAMES.size())));
     
                 // Random address
                 Employee.Address address = getAddress();
@@ -158,25 +159,28 @@ public class EmployeeService {
         }
 
         private Employee setJobInfoAndReturn(Employee employee, Employee manager) {
-            log.debug("setJobInfoAndReturn method invoked");
-            Employee.JobInfo jobInfo = new Employee.JobInfo();
-            jobInfo.setEmail(
-                    employee.getFirstName().toLowerCase() + "." + employee.getLastName().toLowerCase() + "@em.com");
-            jobInfo.setHireDate(LocalDate.now());
-            jobInfo.setJobId(String.valueOf(random.nextInt(1000)));
-            jobInfo.setSalary(random.nextInt(100000));
-            jobInfo.setManager(manager);
-            employee.setJobInfo(jobInfo);
-            log.debug("setJobInfoAndReturn method finished");
-            return employee;
-        }
+        log.debug("setJobInfoAndReturn method invoked");
+        Employee.JobInfo jobInfo = new Employee.JobInfo();
+        jobInfo.setEmail(
+                String.format("%s.%s@em.com", 
+                    employee.getFirstName().toLowerCase(Locale.ROOT), 
+                    employee.getLastName().toLowerCase(Locale.ROOT))
+        );
+        jobInfo.setHireDate(LocalDate.now(ZoneId.systemDefault()));
+        jobInfo.setJobId(String.valueOf(random.nextInt(1000)));
+        jobInfo.setSalary(random.nextInt(100000));
+        jobInfo.setManager(manager);
+        employee.setJobInfo(jobInfo);
+        log.debug("setJobInfoAndReturn method finished");
+        return employee;
+    }
 
         private Employee.Address getAddress() {
             log.debug("getAddress method invoked");
             Employee.Address address = new Employee.Address();
-            address.setStreet(STREET_NAMES[random.nextInt(STREET_NAMES.length)]);
-            address.setCity(CITY_NAMES[random.nextInt(CITY_NAMES.length)]);
-            address.setRegion(STATE_NAMES[random.nextInt(STATE_NAMES.length)]);
+            address.setStreet(STREET_NAMES.get(random.nextInt(STREET_NAMES.size())));
+            address.setCity(CITY_NAMES.get(random.nextInt(CITY_NAMES.size())));
+            address.setRegion(STATE_NAMES.get(random.nextInt(STATE_NAMES.size())));
             address.setZipCode(ZIP_CODES.get(random.nextInt(ZIP_CODES.size())));
             char blockLetter = (char) ('A' + random.nextInt(26));
             address.setBlock(String.valueOf(blockLetter) + random.nextInt(20) + 1);
@@ -226,6 +230,4 @@ public class EmployeeService {
             employeeRepository.save(employee);
             log.debug("updateLeaveInfo method finished");
         }
-
-
 }

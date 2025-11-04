@@ -5,12 +5,12 @@ import com.example.modfac.model.Status;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class LeaveUtils {
     private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(LeaveUtils.class);
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LeaveUtils.class);
     public static final int LEAVE_PERIOD_DAYS = 365;
     public static final LocalDate LEAVE_PERIOD_STARTING_DATE = LocalDate.of(2025, 1, 1);
 
@@ -44,8 +44,16 @@ public final class LeaveUtils {
 
     public static Status getRandomStatus() {
         LOG.debug("getRandomStatus method invoked");
-        Status result = Status.values()[RANDOM.nextInt(Status.values().length)];
+        Status result = getRandomStatusUsingList();
         LOG.debug("getRandomStatus method finished");
+        return result;
+    }
+
+    public static Status getRandomStatusUsingList() {
+        LOG.debug("getRandomStatusUsingList method invoked");
+        List<Status> statuses = List.of(Status.values());
+        Status result = statuses.get(RANDOM.nextInt(statuses.size()));
+        LOG.debug("getRandomStatusUsingList method finished");
         return result;
     }
 
