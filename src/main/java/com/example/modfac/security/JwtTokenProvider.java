@@ -71,7 +71,9 @@ public class JwtTokenProvider {
                     .build()
                     .parseSignedClaims(token);
     
-            boolean isValid = !claims.getPayload().getExpiration().before(new Date());
+            Instant expiration = claims.getPayload().getExpiration().toInstant();
+            boolean isValid = !expiration.isBefore(Instant.now());
+    
             LOG.debug("validateToken method finished");
             return isValid;
         } catch (JwtException | IllegalArgumentException e) {
