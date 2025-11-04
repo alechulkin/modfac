@@ -33,10 +33,10 @@ public class EmployeeService {
     private static final List<String> STREET_NAMES = List.of("Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St");
     private static final List<String> CITY_NAMES = List.of("New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose");
     private static final List<String> STATE_NAMES = List.of("NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA");
-        /**
-         * An immutable list of country names that can be safely used without concerns about mutability.
-         */
-        public static final List<String> COUNTRY_NAMES = Collections.unmodifiableList(List.of("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica"));
+    /**
+     * An immutable list of country names that can be safely used without concerns about mutability.
+     */
+    public static final List<String> COUNTRY_NAMES = List.of("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica");
     private static final List<String> ZIP_CODES = List.of("10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101");
     public static final int NUM_EMPLOYEES = 500;
 
