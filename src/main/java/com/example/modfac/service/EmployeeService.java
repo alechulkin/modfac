@@ -28,11 +28,11 @@ import static com.example.modfac.util.EmployeeUtils.*;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
-    public static final String[] FIRST_NAMES = {"John", "Emily", "Michael", "Sarah", "William", "Olivia", "James", "Ava", "Robert", "Isabella"};
-    public static final String[] LAST_NAMES = {"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor"};
-    public static final String[] STREET_NAMES = {"Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St"};
-    public static final String[] CITY_NAMES = {"New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"};
-    public static final String[] STATE_NAMES = {"NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"};
+    public static final List<String> FIRST_NAMES = Collections.unmodifiableList(Arrays.asList("John", "Emily", "Michael", "Sarah", "William", "Olivia", "James", "Ava", "Robert", "Isabella"));
+    public static final List<String> LAST_NAMES = Collections.unmodifiableList(Arrays.asList("Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor"));
+    public static final List<String> STREET_NAMES = Collections.unmodifiableList(Arrays.asList("Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St"));
+    public static final List<String> CITY_NAMES = Collections.unmodifiableList(Arrays.asList("New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"));
+    public static final List<String> STATE_NAMES = Collections.unmodifiableList(Arrays.asList("NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"));
         /**
          * An immutable list of country names that can be safely used without concerns about mutability.
          */
@@ -128,8 +128,8 @@ public class EmployeeService {
                 Employee employee = new Employee();
     
                 // Random name
-                employee.setFirstName(FIRST_NAMES[random.nextInt(FIRST_NAMES.length)]);
-                employee.setLastName(LAST_NAMES[random.nextInt(LAST_NAMES.length)]);
+                employee.setFirstName(FIRST_NAMES.get(random.nextInt(FIRST_NAMES.size())));
+                employee.setLastName(LAST_NAMES.get(random.nextInt(LAST_NAMES.size())));
     
                 // Random address
                 Employee.Address address = getAddress();
@@ -174,9 +174,9 @@ public class EmployeeService {
         private Employee.Address getAddress() {
             log.debug("getAddress method invoked");
             Employee.Address address = new Employee.Address();
-            address.setStreet(STREET_NAMES[random.nextInt(STREET_NAMES.length)]);
-            address.setCity(CITY_NAMES[random.nextInt(CITY_NAMES.length)]);
-            address.setRegion(STATE_NAMES[random.nextInt(STATE_NAMES.length)]);
+            address.setStreet(STREET_NAMES.get(random.nextInt(STREET_NAMES.size())));
+            address.setCity(CITY_NAMES.get(random.nextInt(CITY_NAMES.size())));
+            address.setRegion(STATE_NAMES.get(random.nextInt(STATE_NAMES.size())));
             address.setZipCode(ZIP_CODES.get(random.nextInt(ZIP_CODES.size())));
             char blockLetter = (char) ('A' + random.nextInt(26));
             address.setBlock(String.valueOf(blockLetter) + random.nextInt(20) + 1);
