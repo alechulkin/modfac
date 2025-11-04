@@ -23,8 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
     private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(EmployeeController.class);
-    private static final org.slf4j.Logger APPLICATION_LOGGER = org.slf4j.LoggerFactory.getLogger(EmployeeController.class);
     private final DataService dataService;
+    
     @PostMapping
     public ResponseEntity<Employee> onboardEmployee(
             @Valid @RequestBody OnboardEmployeeDTO dto,
