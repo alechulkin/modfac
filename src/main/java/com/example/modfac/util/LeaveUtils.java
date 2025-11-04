@@ -5,6 +5,7 @@ import com.example.modfac.model.Status;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -43,8 +44,16 @@ public final class LeaveUtils {
 
     public static Status getRandomStatus() {
         LOG.debug("getRandomStatus method invoked");
-        Status result = Status.values()[RANDOM.nextInt(Status.values().length)];
+        Status result = getRandomStatusUsingList();
         LOG.debug("getRandomStatus method finished");
+        return result;
+    }
+
+    public static Status getRandomStatusUsingList() {
+        LOG.debug("getRandomStatusUsingList method invoked");
+        List<Status> statuses = List.of(Status.values());
+        Status result = statuses.get(RANDOM.nextInt(statuses.size()));
+        LOG.debug("getRandomStatusUsingList method finished");
         return result;
     }
 
