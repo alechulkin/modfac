@@ -28,16 +28,16 @@ import static com.example.modfac.util.EmployeeUtils.*;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
-    public static final List<String> FIRST_NAMES = Collections.unmodifiableList(Arrays.asList("John", "Emily", "Michael", "Sarah", "William", "Olivia", "James", "Ava", "Robert", "Isabella"));
-    public static final List<String> LAST_NAMES = Collections.unmodifiableList(Arrays.asList("Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor"));
-    public static final List<String> STREET_NAMES = Collections.unmodifiableList(Arrays.asList("Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St"));
-    public static final List<String> CITY_NAMES = Collections.unmodifiableList(Arrays.asList("New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"));
-    public static final List<String> STATE_NAMES = Collections.unmodifiableList(Arrays.asList("NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA"));
+    public static final List<String> FIRST_NAMES = List.of("John", "Emily", "Michael", "Sarah", "William", "Olivia", "James", "Ava", "Robert", "Isabella");
+    private static final List<String> LAST_NAMES = List.of("Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor");
+    public static final List<String> STREET_NAMES = List.of("Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St");
+    public static final List<String> CITY_NAMES = List.of("New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose");
+    public static final List<String> STATE_NAMES = List.of("NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA");
         /**
          * An immutable list of country names that can be safely used without concerns about mutability.
          */
-        public static final List<String> COUNTRY_NAMES = Collections.unmodifiableList(Arrays.asList("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica"));
-    public static final List<String> ZIP_CODES = Collections.unmodifiableList(Arrays.asList("10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101"));
+        public static final List<String> COUNTRY_NAMES = List.of("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica");
+    public static final List<String> ZIP_CODES = List.of("10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101");
     public static final int NUM_EMPLOYEES = 500;
 
     private final Random random = ThreadLocalRandom.current();
@@ -226,6 +226,10 @@ public class EmployeeService {
             employeeRepository.save(employee);
             log.debug("updateLeaveInfo method finished");
         }
+
+    public List<String> getLastNames() {
+        return new ArrayList<>(LAST_NAMES);
+    }
 
 
 }
