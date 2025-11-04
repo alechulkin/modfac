@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -165,7 +166,7 @@ public class EmployeeService {
                     employee.getFirstName().toLowerCase(Locale.ROOT), 
                     employee.getLastName().toLowerCase(Locale.ROOT))
         );
-        jobInfo.setHireDate(LocalDate.now());
+        jobInfo.setHireDate(LocalDate.now(ZoneId.systemDefault()));
         jobInfo.setJobId(String.valueOf(random.nextInt(1000)));
         jobInfo.setSalary(random.nextInt(100000));
         jobInfo.setManager(manager);
