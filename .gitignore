@@ -17,6 +17,9 @@ build/
 # Logs
 *.log
 
+# Errorprone issues json
+errorprone_issues.json
+
 # Temporary files
 *.tmp
 *.swp

@@ -226,26 +226,4 @@ public class EmployeeService {
             employeeRepository.save(employee);
             log.debug("updateLeaveInfo method finished");
         }
-
-    public List<String> getLastNames() {
-        return new ArrayList<>(LAST_NAMES);
-    }
-
-    public List<String> getStreetNames() {
-        return Collections.unmodifiableList(STREET_NAMES);
-    }
-
-    public List<String> getCityNames() {
-        return Collections.unmodifiableList(CITY_NAMES);
-    }
-
-    public List<String> getStateNames() {
-        return Collections.unmodifiableList(STATE_NAMES);
-    }
-
-    public List<String> getZipCodes() {
-        return Collections.unmodifiableList(ZIP_CODES);
-    }
-
-
 }
