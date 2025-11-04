@@ -10,7 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class LeaveUtils {
     private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(LeaveUtils.class);
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LeaveUtils.class);
     public static final int LEAVE_PERIOD_DAYS = 365;
     public static final LocalDate LEAVE_PERIOD_STARTING_DATE = LocalDate.of(2025, 1, 1);
 
