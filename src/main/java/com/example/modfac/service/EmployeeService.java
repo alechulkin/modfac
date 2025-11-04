@@ -158,18 +158,21 @@ public class EmployeeService {
         }
 
         private Employee setJobInfoAndReturn(Employee employee, Employee manager) {
-            log.debug("setJobInfoAndReturn method invoked");
-            Employee.JobInfo jobInfo = new Employee.JobInfo();
-            jobInfo.setEmail(
-                    employee.getFirstName().toLowerCase() + "." + employee.getLastName().toLowerCase() + "@em.com");
-            jobInfo.setHireDate(LocalDate.now());
-            jobInfo.setJobId(String.valueOf(random.nextInt(1000)));
-            jobInfo.setSalary(random.nextInt(100000));
-            jobInfo.setManager(manager);
-            employee.setJobInfo(jobInfo);
-            log.debug("setJobInfoAndReturn method finished");
-            return employee;
-        }
+        log.debug("setJobInfoAndReturn method invoked");
+        Employee.JobInfo jobInfo = new Employee.JobInfo();
+        jobInfo.setEmail(
+                String.format("%s.%s@em.com", 
+                    employee.getFirstName().toLowerCase(Locale.ROOT), 
+                    employee.getLastName().toLowerCase(Locale.ROOT))
+        );
+        jobInfo.setHireDate(LocalDate.now());
+        jobInfo.setJobId(String.valueOf(random.nextInt(1000)));
+        jobInfo.setSalary(random.nextInt(100000));
+        jobInfo.setManager(manager);
+        employee.setJobInfo(jobInfo);
+        log.debug("setJobInfoAndReturn method finished");
+        return employee;
+    }
 
         private Employee.Address getAddress() {
             log.debug("getAddress method invoked");
