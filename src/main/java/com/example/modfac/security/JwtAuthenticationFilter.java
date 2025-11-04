@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
                 List<GrantedAuthority> authorities = new ArrayList<>();
                 if (StringUtils.hasText(role)) {
-                    authorities.add(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
+                    authorities.add(new SimpleGrantedAuthority(String.format("ROLE_%s", role.toUpperCase(Locale.ROOT))));
                 }
     
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -59,8 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                // If we reach here, it means the JWT token is invalid or missing
-                // So we set the WWW-Authenticate header and throw a 401 response
                 response.setHeader("WWW-Authenticate", "Bearer");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
