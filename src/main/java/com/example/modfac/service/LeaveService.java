@@ -30,7 +30,7 @@ public class LeaveService {
     /**
      * Process the leave capture request with updated document structure
      */
-        public Map.Entry<Leave, Integer> capture(CaptureLeaveDTO leaveDTO, Employee employee) {
+    public Map.Entry<Leave, Integer> capture(CaptureLeaveDTO leaveDTO, Employee employee) {
         log.debug("capture method invoked");
     
         LocalDate startDate = leaveDTO.getStartDate();

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,13 +41,13 @@ public class JwtTokenProvider {
         claims.put("sub", username); // subject claim
         claims.put("role", role);    // custom role claim
     
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtExpiration);
+        Instant now = Instant.now();
+        Instant validity = now.plusMillis(jwtExpiration);
     
         String token = Jwts.builder()
                 .claims(claims)
-                .issuedAt(now)
-                .expiration(validity)
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(validity))
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
     
