@@ -30,14 +30,14 @@ public class EmployeeService {
 
     public static final List<String> FIRST_NAMES = List.of("John", "Emily", "Michael", "Sarah", "William", "Olivia", "James", "Ava", "Robert", "Isabella");
     private static final List<String> LAST_NAMES = List.of("Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor");
-    public static final List<String> STREET_NAMES = List.of("Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St");
-    public static final List<String> CITY_NAMES = List.of("New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose");
-    public static final List<String> STATE_NAMES = List.of("NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA");
+    private static final List<String> STREET_NAMES = List.of("Main St", "Park Ave", "Elm St", "Oak St", "Maple St", "Pine St", "Cedar St", "Spruce St", "Fir St", "Cypress St");
+    private static final List<String> CITY_NAMES = List.of("New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose");
+    private static final List<String> STATE_NAMES = List.of("NY", "CA", "IL", "TX", "AZ", "PA", "TX", "CA", "TX", "CA");
         /**
          * An immutable list of country names that can be safely used without concerns about mutability.
          */
         public static final List<String> COUNTRY_NAMES = List.of("France", "US", "UK", "Tuvalu", "Lesotho", "Kyrgyzstan", "Nepal", "Luxembourg", "Dominica", "Martinica");
-    public static final List<String> ZIP_CODES = List.of("10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101");
+    private static final List<String> ZIP_CODES = List.of("10001", "90001", "60001", "77001", "85001", "19101", "78201", "92101", "75201", "95101");
     public static final int NUM_EMPLOYEES = 500;
 
     private final Random random = ThreadLocalRandom.current();
@@ -229,6 +229,22 @@ public class EmployeeService {
 
     public List<String> getLastNames() {
         return new ArrayList<>(LAST_NAMES);
+    }
+
+    public List<String> getStreetNames() {
+        return Collections.unmodifiableList(STREET_NAMES);
+    }
+
+    public List<String> getCityNames() {
+        return Collections.unmodifiableList(CITY_NAMES);
+    }
+
+    public List<String> getStateNames() {
+        return Collections.unmodifiableList(STATE_NAMES);
+    }
+
+    public List<String> getZipCodes() {
+        return Collections.unmodifiableList(ZIP_CODES);
     }
 
 
