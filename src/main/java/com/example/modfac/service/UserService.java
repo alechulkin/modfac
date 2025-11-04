@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -180,7 +181,7 @@ public class UserService {
                 userRepository.save(user);
                 addedCount++;
                 if (addedCount % 20 == 0) { // Log progress periodically
-                    LOG.info("Added {}/{} {}s...", addedCount, count, role.name().toLowerCase());
+                    LOG.info("Added {}/{} {}s...", addedCount, count, role.name().toLowerCase(Locale.ROOT));
                 }
             } catch (DuplicateKeyException e) {
                 LOG.warn("Duplicate key error for username '{}'. Skipping.", username);
@@ -189,8 +190,9 @@ public class UserService {
                 LOG.error("Error saving user '{}' with role {}: {}", username, role, e.getMessage(), e);
             }
         }
-        LOG.info("Finished adding {}s. Added: {}, Skipped (already existed): {}", role.name().toLowerCase(), addedCount,
-                skippedCount);
+    
+        LOG.info("Finished adding {}s. Added: {}, Skipped (already existed): {}", role.name().toLowerCase(Locale.ROOT),
+                addedCount, skippedCount);
     
         LOG.debug("addUsersWithRole method finished");
     }
